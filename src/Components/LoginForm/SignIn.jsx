@@ -6,7 +6,7 @@ import { FaUser, FaLock } from 'react-icons/fa';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase';
 
-const SignIn = ({ user }) => {
+export const SignIn = ({ user }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -119,4 +119,4 @@ const SignIn = ({ user }) => {
   );
 };
 
-export default SignIn;
+
