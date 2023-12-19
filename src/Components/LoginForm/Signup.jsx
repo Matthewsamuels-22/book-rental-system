@@ -47,7 +47,7 @@ export const Signup = ({user}) => {
         <button type='submit'>Create Account</button>
         <div className='register-link'>
           <p>
-            Already have an account? <Link to='/signin'>Login</Link>
+            Already have an account? <Link to='/'>Login</Link>
           </p>
         </div>
       </form>

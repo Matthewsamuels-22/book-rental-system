@@ -69,7 +69,9 @@ export const SignIn = ({ user }) => {
       });
   };
 
-  if (user) return <Navigate to='/home' />;
+  if (user) {
+   return  <Navigate to='/home' />;
+  } 
   return (
     <div className='wrapper'>
       <form onSubmit={handleSignIn}>
