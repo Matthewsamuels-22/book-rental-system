@@ -1,124 +1,95 @@
-import React, { useState, useEffect } from 'react';
-import { Navigate, Link } from 'react-router-dom';
 import './index.css';
 import './LoginForm.css';
+
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+
 import { auth } from '../../firebase';
 
-export const SignIn = ({ user }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+export function Signin() {
+    const navigate = useNavigate()
 
-  // Load stored credentials when the component mounts
-  useEffect(() => {
-    const storedEmail = localStorage.getItem('rememberedEmail');
-    const storedPassword = localStorage.getItem('rememberedPassword');
-    const storedRememberMe = localStorage.getItem('rememberMe') === 'true';
+    const emailInputRef = useRef(null)
+    const passwordInputRef = useRef(null)
+    const [rememberMe, setRememberMe] = useState(false);
 
-    if (storedRememberMe) {
-      setEmail(storedEmail || '');
-      setPassword(storedPassword || '');
-      setRememberMe(true);
-    }
-  }, []);
+    useEffect(() => {
+        const shouldRememberMe = window.localStorage.getItem('rememberMe') === 'true';
+        if (shouldRememberMe)
+            setRememberMe(true);
+    }, []);
 
-  const handleSignIn = (e) => {
-    e.preventDefault();
+    async function handleSignIn(event) {
+        event.preventDefault();
 
-    if (email === '' || password === '') {
-      alert('Please fill in all fields');
-      return;
+        const userCredential = await signInWithEmailAndPassword(auth, emailInputRef.current.value, passwordInputRef.current.value);
+        window.localStorage.setItem('rememberMe', rememberMe);
+        console.log(userCredential);
+        navigate('/')
     }
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
+    function handleResetPassword() {
+        sendPasswordResetEmail(auth, emailInputRef.current.value)
+            .then(() => {
+                alert('Password reset link sent to your email address');
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage);
+            });
+    }
 
-        // Store credentials if "Remember Me" is checked
-        if (rememberMe) {
-          localStorage.setItem('rememberedEmail', email);
-          localStorage.setItem('rememberedPassword', password);
-          localStorage.setItem('rememberMe', 'true');
-        } else {
-          // Clear stored credentials if "Remember Me" is unchecked
-          localStorage.removeItem('rememberedEmail');
-          localStorage.removeItem('rememberedPassword');
-          localStorage.removeItem('rememberMe');
-        }
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
-  };
 
-  const handleResetPassword = () => {
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        alert('Password reset link sent to your email address');
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
-  };
-
-  if (user) {
-   return  <Navigate to='/home' />;
-  } 
-  return (
-    <div className='wrapper'>
-      <form onSubmit={handleSignIn}>
-        <h1>Login</h1>
-        <div className='input-box'>
-          <input
-            type='text'
-            placeholder='Username'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <FaUser className='icon' />
+    return (
+        <div className='wrapper'>
+            <form onSubmit={handleSignIn}>
+                <h1>Login</h1>
+                <div className='input-box'>
+                    <input
+                        ref={emailInputRef}
+                        type='email'
+                        placeholder='Username'
+                        autoComplete='username'
+                        required
+                    />
+                    <FaUser className='icon' />
+                </div>
+                <div className='input-box'>
+                    <input
+                        ref={passwordInputRef}
+                        type='password'
+                        placeholder='Password'
+                        autoComplete='current-password'
+                        required
+                    />
+                    <FaLock className='icon' />
+                </div>
+                <div className='remember-forgot'>
+                    <label>
+                        <input
+                            type='checkbox'
+                            checked={rememberMe}
+                            onChange={() => setRememberMe(!rememberMe)}
+                        />
+                        &nbsp;Remember me
+                    </label>
+                    <a href='#' onClick={handleResetPassword}>
+                        Forgot Password
+                    </a>
+                </div>
+                <button type='submit'>Login</button>
+                <div className='register-link'>
+                    <p>
+                        Don't have an account{' '}
+                        <Link to='/auth/signup'>Register</Link>
+                    </p>
+                </div>
+            </form>
         </div>
-        <div className='input-box'>
-          <input
-            type='password'
-            placeholder='Password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <FaLock className='icon' />
-        </div>
-        <div className='remember-forgot'>
-          <label>
-            <input
-              type='checkbox'
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
-            />{' '}
-            Remember me
-          </label>
-          <a href='#' onClick={handleResetPassword}>
-            Forgot Password
-          </a>
-        </div>
-        <button type='submit'>Login</button>
-        <div className='register-link'>
-          <p>
-            Don't have an account{' '}
-            <Link to='/signup'>Register</Link>
-          </p>
-        </div>
-      </form>
-    </div>
-  );
+    );
 };
 
 

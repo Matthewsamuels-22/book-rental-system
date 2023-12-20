@@ -1,53 +1,42 @@
-import React, { useState } from 'react';
-import {Link } from 'react-router-dom'; 
 import './index.css';
 import './LoginForm.css';
+
+import React, { useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+
 import { auth } from '../../firebase';
 
-export const Signup = ({user}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export function Signup() {
+  const navigate = useNavigate()
+  const emailInputRef = useRef(null)
+  const passwordInputRef = useRef(null)
 
-  const handleSignUp = (e) => {
-    if (email === '' || password === '') return alert('Please fill in all fields');
-    if (password.length < 6) return alert('Password must be at least 6 characters');
-    if (!email.includes('@')) return alert('Please enter a valid email address');
-    if (!email === '' && !password === '') return alert('Account created successfully');
-    e.preventDefault(); // Prevents the default form submission behavior
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+  async function handleSignUp(event) {
+    event.preventDefault();
+    const userCredential = await createUserWithEmailAndPassword(auth, emailInputRef.current.value, passwordInputRef.current.value)
+    console.log(userCredential);
+    navigate('/')
   };
 
-  const handleEmailChange = (e) => setEmail(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
-  if (user) return <Navigate to='/home' />;
+
   return (
     <div className='wrapper'>
       <form onSubmit={handleSignUp}>
-        <h1>Login</h1>
+        <h1>Sign up</h1>
         <div className='input-box'>
-          <input type='text' placeholder='Username' required onChange={handleEmailChange} />
+          <input ref={emailInputRef} type='email' placeholder='Username' required />
           <FaUser className='icon' />
         </div>
         <div className='input-box'>
-          <input type='password' placeholder='Password' required onChange={handlePasswordChange} />
+          <input ref={passwordInputRef} type='password' placeholder='Password' minLength={6} required />
           <FaLock className='icon' />
         </div>
         <button type='submit'>Create Account</button>
         <div className='register-link'>
           <p>
-            Already have an account? <Link to='/'>Login</Link>
+            Already have an account? <Link to='/auth/signin'>Login</Link>
           </p>
         </div>
       </form>
