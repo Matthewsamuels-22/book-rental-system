@@ -2,10 +2,10 @@ import './App.css';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { Signin } from './Components/LoginForm/SignIn';
-import { Signup } from './Components/LoginForm/Signup';
-import { Home } from './Components/Pages/Home';
-import { ProtectedRoutes } from './Components/Pages/Protectedroutes';
+import { Signin } from './pages/auth/Signin';
+import { Signup } from './pages/auth/Signup';
+import { Home } from './pages/Home';
+import { ProtectedRoutes } from './pages/ProtectedRoutes';
 
 
 
