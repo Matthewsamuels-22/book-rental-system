@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Boxicons CSS -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <title>Book rental Sidebar</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    
+    <!-- sidebar -->
+    <div class="sidebar">
+      <div class="menu_content">
+        <div class="logo">
+			<i class='bx bxs-book-content'></i>
+			<div class="logo_name">
+			<span class="c1">B</span>
+			<span class="c1">o</span>
+			<span class="c1">o</span>
+			<span class="c1">k</span>
+			<span class="c2">R</span>
+			<span class="c2">e</span>
+			<span class="c2">n</span>
+			<span class="c2">t</span>
+			<span class="c2">a</span>
+			<span class="c2">l</span>
+			<span class="c2">s</span>
+			</div>
+		</div>
+		<i class= 'bx bx-menu' id="btn"></i>
+		</div>
+		<ul class="nav_list">
+		<li>
+		  <i class='bx bx-search'></i>
+			<input type="text" name="" placeholder="Search...">
+		 </li>
+		<li>
+		<a href="#">
+		  <i class='bx bx-grid-alt'></i>
+			<span class="links"> Dashboard</span>
+			</a>
+		 </li>
+		 
+		 <li>
+		<a href="#">
+		  <i class='bx bx-user'></i>
+			<span class="links"> User</span>
+			</a>
+		 </li>
+		 
+		 <li>
+		<a href="#">
+		  <i class='bx bx-chat'></i>
+			<span class="links"> Chat</span>
+			</a>
+		 </li>
+		 
+		 <li>
+		<a href="#">
+		  <i class='bx bx-bell'></i>
+			<span class="links"> Messages</span>
+			</a>
+		 </li>
+		 
+		 <li>
+		<a href="#">
+		  <i class='bx bx-book-open'></i>
+			<span class="links"> Rentals</span>
+			</a>
+		 </li>
+		 
+		 <li>
+		<a href="#">
+		  <i class='bx bx-question-mark'></i>
+			<span class="links"> Requests</span>
+			</a>
+		 
+		 </li>
+		 
+		 <li>
+		<a href="#">
+		  <i class='bx bx-file'></i>
+			<span class="links"> Files</span>
+			</a>
+		 </li>
+		 
+        <!-- Sidebar Expand/Minimize -->
+        <li>
+		<a href="#">
+            <i class='bx bx-log-in' ></i>
+            <span class="links_name"> Log In</span>
+			</a>
+		</li>
+		<li>
+		<a href="#">
+            <i class='bx bx-log-out' ></i>
+            <span class="links_name"> Log Out</span>
+			</a>
+		</li>
+        </div>
+      
+    <!-- JScript -->
+    <script src="script.js"></script>
+	
+	<script>
+	  document.addEventListener("DOMContentLoaded", function () {
+	let menuBtn = document.querySelector(".bx-menu");
+	let sidebar = document.querySelector(".sidebar");
+	let searchBtn = document.querySelector(".bx-search");
+	
+	menuBtn.onclick = function() {
+	sidebar.classList.toggle("play");
+	
+	};
+	searchBtn.onclick = function() {
+	sidebar.classList.toggle("play");
+	};
+	});
+	</script>
+  </body>
+</html>
