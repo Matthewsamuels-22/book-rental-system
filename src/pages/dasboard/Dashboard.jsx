@@ -1,28 +1,26 @@
 import React from 'react'
+import 'chart.js/auto';
+
+import Box from "@mui/material/Box"
+import Stack from '@mui/material/Stack'
+
 import { PieChart } from './PieChart'
 import { BarChart } from './BarChart'
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
-import './DashBoard.css'
 
-export function DashBoard  () {
+import './dashboard.css'
+
+export function Dashboard() {
   return (
-    <div className='dashboard'>
-        <div className='sidebar'>
-          Sidebar
-          <button onClick={()=>signOut(auth)}>Sign Out</button>
-          </div>
-        <div className='content'>
-        <div className='top'>
+    <Stack className='dashboard' spacing={2}>
+      <Box display='flex' justifyContent='space-evenly' flexWrap='wrap' gap={2}>
         <div className='students'>Total Student</div>
-          <div className='books'>Total Books</div>
-          <div className='issued'>Total Issued Books</div>
-        </div>
-        <div className='charts'>
-            <PieChart/>
-            <BarChart/>
-        </div>   
-        </div>
-    </div>
+        <div className='books'>Total Books</div>
+        <div className='issued'>Total Issued Books</div>
+      </Box>
+      <Box display='flex' justifyContent='space-evenly' flexWrap='wrap' gap={2}>
+        <div className='chart-container flex-grow-1'><PieChart /></div>
+        <div className='chart-container flex-grow-1'><BarChart /></div>
+      </Box>
+    </Stack>
   )
 }
