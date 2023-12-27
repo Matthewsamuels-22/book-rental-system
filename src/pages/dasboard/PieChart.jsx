@@ -1,5 +1,4 @@
 import React from 'react'
-import Charts from 'chart.js/auto';
 import { Pie } from 'react-chartjs-2';
 
 const labels = ["January", "February", "March", "April", "May", "June"];
@@ -17,9 +16,9 @@ const data = {
 };
 
 
-export function PieChart () {
+export function PieChart() {
   return (
-    <div><Pie data={data}/></div>
+    <Pie data={data} />
   )
 }
 

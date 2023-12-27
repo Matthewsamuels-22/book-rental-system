@@ -1,12 +1,20 @@
-import './index.css';
-import './loginform.css';
-
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField"
+import InputAdornment from '@mui/material/InputAdornment';
+import Checkbox from "@mui/material/Checkbox"
+import FormControlLabel from "@mui/material/FormControlLabel"
+import Box from "@mui/material/Box"
+import Stack from '@mui/material/Stack'
+import MuiLink from '@mui/material/Link'
+import Typography from "@mui/material/Typography";
+
 import { auth } from '../../firebase';
+
 
 export function Signin() {
     const navigate = useNavigate()
@@ -26,6 +34,7 @@ export function Signin() {
 
         const userCredential = await signInWithEmailAndPassword(auth, emailInputRef.current.value, passwordInputRef.current.value);
         window.localStorage.setItem('rememberMe', rememberMe);
+        window.sessionStorage.setItem('activeSession', true);
         console.log(userCredential);
         navigate('/')
     }
@@ -44,52 +53,66 @@ export function Signin() {
 
 
     return (
-        <div className='wrapper'>
+        <Box display="flex" justifyContent='center' alignItems='center' minHeight='100vh'>
             <form onSubmit={handleSignIn}>
-                <h1>Login</h1>
-                <div className='input-box'>
-                    <input
-                        ref={emailInputRef}
+                <Stack spacing={2}>
+                    <Typography component='h1' variant='h4' fontWeight='bold'>
+                        Sign in
+                    </Typography>
+
+                    <TextField
                         type='email'
-                        placeholder='Username'
+                        label='Email'
                         autoComplete='username'
                         required
-                    />
-                    <FaUser className='icon' />
-                </div>
-                <div className='input-box'>
-                    <input
-                        ref={passwordInputRef}
+                        inputRef={emailInputRef}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position='end'>
+                                    <FaUser />
+                                </InputAdornment>
+                            )
+                        }} />
+
+                    <TextField
                         type='password'
-                        placeholder='Password'
+                        label='Password'
                         autoComplete='current-password'
                         required
-                    />
-                    <FaLock className='icon' />
-                </div>
-                <div className='remember-forgot'>
-                    <label>
-                        <input
-                            type='checkbox'
-                            checked={rememberMe}
-                            onChange={() => setRememberMe(!rememberMe)}
-                        />
-                        &nbsp;Remember me
-                    </label>
-                    <a href='#' onClick={handleResetPassword}>
-                        Forgot Password
-                    </a>
-                </div>
-                <button type='submit'>Login</button>
-                <div className='register-link'>
-                    <p>
-                        Don't have an account{' '}
-                        <Link to='/auth/signup'>Register</Link>
-                    </p>
-                </div>
+                        inputRef={passwordInputRef}
+                        InputProps={{
+                            endAdornment: <InputAdornment position='end'><FaLock /></InputAdornment>
+                        }} />
+
+                    <Stack direction='row' alignItems='center'>
+                        <FormControlLabel
+                            label='Remember me'
+                            control={
+                                <Checkbox checked={rememberMe}
+                                    onChange={() => setRememberMe(!rememberMe)}
+                                />
+                            } />
+                        <MuiLink
+                            component={Link}
+                            to='/auth/reset-password'
+                            underline='none'>
+                            Forgot password?
+                        </MuiLink>
+                    </Stack>
+
+                    <Button type='submit' variant='contained'>Sign in</Button>
+
+                    <div>
+                        Don't have an account?&nbsp;
+                        <MuiLink
+                            component={Link}
+                            to='/auth/signup'
+                            underline='none'>
+                            Register
+                        </MuiLink>
+                    </div>
+                </Stack>
             </form>
-        </div>
+        </Box>
     );
 };
-
-

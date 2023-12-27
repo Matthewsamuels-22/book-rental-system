@@ -1,49 +1,12 @@
-.dashboard {
-    height: 100vh;
-    width: 100%;
-    border: 1px solid black;
-}
-
-.dashboard .sidebar {
-    height: 100vh;
-    width: 20%;
-    border: 1px solid black;
-    float: left;
-    margin-right: 3rem;
-}
-
-.dashboard .top{
-    display: flex;
-    justify-content: space-evenly;
-}
-
-
-
-.dashboard .students, .dashboard .books, .dashboard .issued{
-    border: 1px solid black;
+.dashboard .students,
+.dashboard .books,
+.dashboard .issued {
+    padding: 1rem 0.5rem;
+    background-color: lightblue;
     width: 200px;
-    height: 150px;
-    margin-top: 2rem;
+    border-radius: 8px;
 }
 
-.dashboard .PieChart {
-    height: 150px;
-    width: 150px;
-}
-.dashboard .BarChart{
-    height: 150px;
-    width: 150px;
-}
-
-.dashboard .charts{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: center;
-    margin: auto;
-    margin-top: 3rem;
-    padding: 2rem; 
-    border: 1px solid black;
-    width: 760px;
-    
+.chart-container {
+    max-width: 500px;
 }

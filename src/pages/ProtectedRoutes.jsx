@@ -1,4 +1,4 @@
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom"
 
@@ -16,17 +16,21 @@ export function ProtectedRoutes() {
         return
       }
 
-      console.log(user);
-      const loginTime = parseInt(user.metadata.lastLoginAt)
+      const activeSession = window.sessionStorage.getItem('activeSession') === 'true'
 
-      if (Date.now() - loginTime <= 180000) {
-        // user signed in ~3 minutes ago
+      if (activeSession) {
         setSignedIn(true)
         return
       }
 
       const rememberMe = window.localStorage.getItem('rememberMe') === 'true'
-      if (rememberMe) setSignedIn(true)
+
+      if (rememberMe) {
+        setSignedIn(true)
+        return
+      }
+
+      signOut(auth)
     });
 
     return unsubscribe;

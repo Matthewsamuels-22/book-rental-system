@@ -16,8 +16,8 @@ const data = {
   ],
 };
 
-export function BarChart ()  {
+export function BarChart() {
   return (
-    <div><Bar data={data}/></div>
+    <Bar data={data} />
   )
 }
