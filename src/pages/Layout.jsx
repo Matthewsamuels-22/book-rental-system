@@ -71,7 +71,7 @@ export function Layout() {
 						iconPosition='start' />
 					<Tab
 						component={Link}
-						to="/"
+						to="/borrows"
 						label='Rentals'
 						icon={<FaBookOpen />}
 						iconPosition='start' />
@@ -83,7 +83,7 @@ export function Layout() {
 						iconPosition='start' />
 					<Tab
 						component={Link}
-						to="/"
+						to="/books"
 						label='Files'
 						icon={<FaFile />}
 						iconPosition='start' />
