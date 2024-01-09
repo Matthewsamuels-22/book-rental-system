@@ -1,17 +1,17 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 
-import { BorrowContext } from '../contexts/BorrowContext';
-import { dateToIsoDateString } from '../utilities/dateformat';
+import { BorrowContext } from "../contexts/BorrowContext";
+import { dateToIsoDateString } from "../utilities/dateformat";
 
 export function BorrowTable() {
-	const { borrows } = useContext(BorrowContext)
+	const { borrows } = useContext(BorrowContext);
 
 	return (
 		<TableContainer>
@@ -27,8 +27,8 @@ export function BorrowTable() {
 						<TableCell>Condition Returned</TableCell>
 					</TableRow>
 				</TableHead>
-				<TableBody>{
-					borrows.map((entry, index) => (
+				<TableBody>
+					{borrows.map((entry, index) => (
 						<TableRow key={index}>
 							<TableCell>{entry.id}</TableCell>
 							<TableCell>{entry.borrower}</TableCell>
@@ -38,8 +38,8 @@ export function BorrowTable() {
 							<TableCell>{entry.conditionBorrowed}</TableCell>
 							<TableCell>{entry.conditionReturned}</TableCell>
 						</TableRow>
-					))
-				}</TableBody>
+					))}
+				</TableBody>
 			</Table>
 		</TableContainer>
 	);
