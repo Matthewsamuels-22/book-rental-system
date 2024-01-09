@@ -35,6 +35,10 @@ To keep your local repository in sync, follow the steps below in order.
 1.  Commit and push your changes
 1.  Create a pull request (PR) from your branch to the `main` branch
 
+> [!note]
+> Execute the command `npm run format` in the app's root directory before each
+> commit to ensure that your code style is consistent with the codebase.
+
 ## Git Guidelines
 
 ### Branches

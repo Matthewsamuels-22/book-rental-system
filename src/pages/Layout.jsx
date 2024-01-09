@@ -1,95 +1,96 @@
 import { signOut } from "firebase/auth";
 import { useState } from "react";
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet } from "react-router-dom";
 
 import {
-	FaBorderAll,
-	FaUser,
-	FaComment,
 	FaBell,
 	FaBookOpen,
-	FaQuestion,
+	FaBorderAll,
+	FaComment,
 	FaFile,
-	FaSignOutAlt
+	FaQuestion,
+	FaSignOutAlt,
+	FaUser,
 } from "react-icons/fa";
 
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
-import Stack from '@mui/material/Stack';
-import Tabs from "@mui/material/Tabs";
+import Stack from "@mui/material/Stack";
 import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 
-import { auth } from '../firebase';
-
-
+import { auth } from "../firebase";
 
 export function Layout() {
-	const [tabIndex, setTabIndex] = useState(0)
+	const [tabIndex, setTabIndex] = useState(0);
 
 	function handleTabChange(event, newTabIndex) {
-		setTabIndex(newTabIndex)
+		setTabIndex(newTabIndex);
 	}
 
 	return (
-		<Stack direction='row'>
+		<Stack direction="row">
 			<div className="sidenav">
-				<Button
-					type='button'
-					onClick={() => signOut(auth)}
-					endIcon={<FaSignOutAlt />}>
+				<Button type="button" onClick={() => signOut(auth)} endIcon={<FaSignOutAlt />}>
 					Sign Out
 				</Button>
 				<Divider variant="middle" />
-				<Tabs
-					orientation='vertical'
-					value={tabIndex}
-					onChange={handleTabChange}>
+				<Tabs orientation="vertical" value={tabIndex} onChange={handleTabChange}>
 					<Tab
 						component={Link}
 						to="/"
-						label='Dashboard'
+						label="Dashboard"
 						icon={<FaBorderAll />}
-						iconPosition='start' />
+						iconPosition="start"
+					/>
 					<Tab
 						component={Link}
 						to="/"
-						label='User'
+						label="User"
 						icon={<FaUser />}
-						iconPosition='start' />
+						iconPosition="start"
+					/>
 					<Tab
 						component={Link}
 						to="/"
-						label='Chat'
+						label="Chat"
 						icon={<FaComment />}
-						iconPosition='start' />
+						iconPosition="start"
+					/>
 					<Tab
 						component={Link}
 						to="/"
-						label='Messages'
+						label="Messages"
 						icon={<FaBell />}
-						iconPosition='start' />
+						iconPosition="start"
+					/>
 					<Tab
 						component={Link}
 						to="/borrows"
-						label='Rentals'
+						label="Rentals"
 						icon={<FaBookOpen />}
-						iconPosition='start' />
+						iconPosition="start"
+					/>
 					<Tab
 						component={Link}
 						to="/"
-						label='Requests'
+						label="Requests"
 						icon={<FaQuestion />}
-						iconPosition='start' />
+						iconPosition="start"
+					/>
 					<Tab
 						component={Link}
 						to="/books"
-						label='Files'
+						label="Files"
 						icon={<FaFile />}
-						iconPosition='start' />
+						iconPosition="start"
+					/>
 				</Tabs>
 			</div>
-			<Container fixed><Outlet /></Container>
+			<Container fixed>
+				<Outlet />
+			</Container>
 		</Stack>
 	);
 }

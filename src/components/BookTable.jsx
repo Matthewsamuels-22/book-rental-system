@@ -1,16 +1,16 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 
-import { BookContext } from '../contexts/BookContext';
+import { BookContext } from "../contexts/BookContext";
 
 export function BookTable() {
-	const { books } = useContext(BookContext)
+	const { books } = useContext(BookContext);
 
 	return (
 		<TableContainer>
@@ -26,19 +26,19 @@ export function BookTable() {
 						<TableCell>Year Published</TableCell>
 					</TableRow>
 				</TableHead>
-				<TableBody>{
-					books.map((book, index) => (
+				<TableBody>
+					{books.map((book, index) => (
 						<TableRow key={index}>
 							<TableCell>{book.id}</TableCell>
 							<TableCell>{book.title}</TableCell>
-							<TableCell>{book.authors.join(', ')}</TableCell>
+							<TableCell>{book.authors.join(", ")}</TableCell>
 							<TableCell>{book.edition}</TableCell>
 							<TableCell>{book.volume}</TableCell>
 							<TableCell>{book.publisher}</TableCell>
 							<TableCell>{book.yearPublished}</TableCell>
 						</TableRow>
-					))
-				}</TableBody>
+					))}
+				</TableBody>
 			</Table>
 		</TableContainer>
 	);
