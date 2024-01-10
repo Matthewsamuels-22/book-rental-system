@@ -6,8 +6,8 @@
  */
 export function dateFromIsoDateString(text) {
 	if (text.length > 0) {
-		return new Date(text + 'T00:00')
+		return new Date(text + "T00:00");
 	}
 
-	return null
+	return null;
 }
