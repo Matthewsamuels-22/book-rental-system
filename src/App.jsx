@@ -12,24 +12,28 @@ import { ProtectedRoutes } from "./pages/ProtectedRoutes";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
 
-import "./App.css";
+import './App.css'
+import { Account } from './pages/Account';
+
+
 
 function AppRouter() {
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/auth/signin" element={<Signin />} />
-				<Route path="/auth/signup" element={<Signup />} />
-				<Route element={<ProtectedRoutes />}>
-					<Route element={<Layout />}>
-						<Route path="/" element={<Home />} />
-						<Route path="/books" element={<Books />} />
-						<Route path="/borrows" element={<Borrows />} />
-					</Route>
-				</Route>
-			</Routes>
-		</BrowserRouter>
-	);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/auth/signin' element={<Signin />} />
+        <Route path='/auth/signup' element={<Signup />} />
+        <Route element={<ProtectedRoutes />}>
+          <Route element={<Layout />}>
+            <Route path='/' element={<Home />} />
+            <Route path='/books' element={<Books />} />
+            <Route path='/borrows' element={<Borrows />} />
+            <Route path='/account' element={<Account />} />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 function App() {
