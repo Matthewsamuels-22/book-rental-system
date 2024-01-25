@@ -53,14 +53,7 @@ export function Layout() {
 					/>
 					<Tab
 						component={Link}
-						to="/"
-						label="Chat"
-						icon={<FaComment />}
-						iconPosition="start"
-					/>
-					<Tab
-						component={Link}
-						to="/"
+						to="/messages"
 						label="Messages"
 						icon={<FaBell />}
 						iconPosition="start"

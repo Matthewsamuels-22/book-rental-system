@@ -14,6 +14,7 @@ import { Signup } from "./pages/auth/Signup";
 
 import './App.css'
 import { Account } from './pages/Account';
+import { Message } from './pages/Message';
 
 
 
@@ -29,6 +30,7 @@ function AppRouter() {
             <Route path='/books' element={<Books />} />
             <Route path='/borrows' element={<Borrows />} />
             <Route path='/account' element={<Account />} />
+            <Route path='/messages' element={<Message />} />
           </Route>
         </Route>
       </Routes>
