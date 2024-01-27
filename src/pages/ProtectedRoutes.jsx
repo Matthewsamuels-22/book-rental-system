@@ -1,4 +1,4 @@
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -16,21 +16,7 @@ export function ProtectedRoutes() {
 				return;
 			}
 
-			const activeSession = window.sessionStorage.getItem("activeSession") === "true";
-
-			if (activeSession) {
-				setSignedIn(true);
-				return;
-			}
-
-			const rememberMe = window.localStorage.getItem("rememberMe") === "true";
-
-			if (rememberMe) {
-				setSignedIn(true);
-				return;
-			}
-
-			signOut(auth);
+			setSignedIn(true);
 		});
 
 		return unsubscribe;

@@ -47,7 +47,7 @@ export function Layout() {
 					<Tab
 						component={Link}
 						to="/account"
-						label='Account'
+						label="Account"
 						icon={<FaUser />}
 						iconPosition="start"
 					/>

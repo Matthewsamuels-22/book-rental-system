@@ -1,4 +1,8 @@
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import {
+	browserSessionPersistence,
+	setPersistence,
+	signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useEffect, useRef, useState } from "react";
 import { FaLock, FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
@@ -30,6 +34,10 @@ export function Signin() {
 	async function handleSignIn(event) {
 		event.preventDefault();
 
+		if (!rememberMe) {
+			await setPersistence(auth, browserSessionPersistence);
+		}
+
 		const userCredential = await signInWithEmailAndPassword(
 			auth,
 			emailInputRef.current.value,
@@ -37,21 +45,8 @@ export function Signin() {
 		);
 
 		window.localStorage.setItem("rememberMe", rememberMe);
-		window.sessionStorage.setItem("activeSession", true);
 		console.log(userCredential);
 		navigate("/");
-	}
-
-	function handleResetPassword() {
-		sendPasswordResetEmail(auth, emailInputRef.current.value)
-			.then(() => {
-				alert("Password reset link sent to your email address");
-			})
-			.catch((error) => {
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				console.log(errorCode, errorMessage);
-			});
 	}
 
 	return (
