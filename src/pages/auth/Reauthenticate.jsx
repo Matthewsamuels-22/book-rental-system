@@ -1,63 +1,46 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import { useRef } from "react";
-import { FaLock, FaUser } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { FaLock } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
-import MuiLink from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import { auth } from "../../firebase";
 
-export function Signup() {
+export function Reauthenticate() {
 	const navigate = useNavigate();
-	const emailInputRef = useRef(null);
 	const passwordInputRef = useRef(null);
 
-	async function handleSignUp(event) {
+	async function handleReauthentication(event) {
 		event.preventDefault();
 
-		const userCredential = await createUserWithEmailAndPassword(
-			auth,
-			emailInputRef.current.value,
+		const currentUser = auth.currentUser;
+		const credential = EmailAuthProvider.credential(
+			currentUser.email,
 			passwordInputRef.current.value,
 		);
-
-		console.log(userCredential);
-		navigate("/");
+		await reauthenticateWithCredential(currentUser, credential);
+		navigate("/account?reauthenticated=true");
 	}
 
 	return (
 		<Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-			<Stack component="form" onSubmit={handleSignUp} spacing={2}>
+			<Stack component="form" onSubmit={handleReauthentication} spacing={2}>
 				<Typography component="h1" variant="h4" fontWeight="bold">
-					Sign up
+					Reauthenticate
 				</Typography>
-
-				<TextField
-					type="email"
-					label="Email"
-					required
-					inputRef={emailInputRef}
-					InputProps={{
-						endAdornment: (
-							<InputAdornment position="end">
-								<FaUser />
-							</InputAdornment>
-						),
-					}}
-				/>
 
 				<TextField
 					type="password"
 					label="Password"
+					autoComplete="current-password"
 					required
 					inputRef={passwordInputRef}
-					inputProps={{ minLength: 6 }}
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">
@@ -68,15 +51,8 @@ export function Signup() {
 				/>
 
 				<Button type="submit" variant="contained">
-					Create account
+					Reauthenticate
 				</Button>
-
-				<div>
-					Already have an account?&nbsp;
-					<MuiLink component={Link} to="/auth/signin" underline="none">
-						Sign in
-					</MuiLink>
-				</div>
 			</Stack>
 		</Box>
 	);

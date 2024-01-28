@@ -1,42 +1,126 @@
-import TextField from "@mui/material/TextField"
-import Button from "@mui/material/Button"
-import Avatar from "@mui/material/Avatar"
-import Box from "@mui/material/Box"
-import { Stack } from "@mui/material"
-import { deepOrange, deepPurple } from '@mui/material/colors';
-import { getAuth, updatePassword } from "firebase/auth";
+import { updatePassword, updateProfile, verifyBeforeUpdateEmail } from "firebase/auth";
+import { Fragment, useRef, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-export function Account() {
-    const auth = getAuth();
-    const user = auth.currentUser;
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
 
+import { auth } from "../firebase";
 
-    async function handlerest(event) {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const newPassword = formData.get("new-password");
-        await updatePassword(user, newPassword)
-        alert("password updated")
-    }
-    // Extract the first two characters of the email
-    const emailAbbreviation = user.email.slice(0, 2).toUpperCase();
-    return (
-        <Box 
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
-        >
-            <Stack component="form" spacing={2} onSubmit={handlerest}>
-                    <Avatar sx={{ bgcolor: deepOrange[500], width: 56, height: 56, justifyContent: "center", display: "flex"}}>{emailAbbreviation}</Avatar><br/>
-                    <TextField name= "email" variant="filled" value={user.email} sx={{width: 500}}/>
-                    <TextField name= "current-password" label="current password" variant="filled" />
-                    <TextField name= "new-password"label="updated password" variant="filled" />
-                    <Button variant="contained" type="submit">Update</Button>
-            </Stack>
-           
-        </Box>
-        
-    )
+const AuthErrorCodes = { REQUIRES_RECENT_LOGIN: "auth/requires-recent-login" };
+
+/**
+ * @param {string} text
+ */
+function getInitials(text) {
+	return text.includes(" ")
+		? text
+				.split(" ")
+				.map((x) => x[0])
+				.join("")
+		: text.substring(0, 6);
 }
 
+export function Account() {
+	const currentUser = auth.currentUser;
+
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+
+	const displayNameInputRef = useRef(null);
+	const emailInputRef = useRef(null);
+	const newPasswordInputRef = useRef(null);
+
+	const [reauthenticated, setReauthenticated] = useState(
+		searchParams.get("reauthenticated") === "true",
+	);
+
+	async function changeProfile() {
+		await updateProfile(currentUser, { displayName: displayNameInputRef.current.value });
+		window.alert("Profile was updated");
+	}
+
+	async function changeEmailAddress(event) {
+		if (!reauthenticated) {
+			navigate("/auth/reauthenticate");
+			return;
+		}
+
+		try {
+			await verifyBeforeUpdateEmail(currentUser, emailInputRef.current.value);
+			window.alert("Email was updated");
+		} catch (error) {
+			if (error.code === AuthErrorCodes.REQUIRES_RECENT_LOGIN) {
+				setReauthenticated(false);
+				event.target.click();
+			}
+		}
+	}
+
+	async function changePassword(event) {
+		if (!reauthenticated) {
+			navigate("/auth/reauthenticate");
+			return;
+		}
+
+		try {
+			await updatePassword(currentUser, newPasswordInputRef.current.value);
+			window.alert("Password was updated");
+		} catch (error) {
+			if (error.code === AuthErrorCodes.REQUIRES_RECENT_LOGIN) {
+				setReauthenticated(false);
+				event.target.click();
+			}
+		}
+	}
+
+	return (
+		<Fragment>
+			<Stack direction="row" marginTop={2} spacing={2}>
+				<Avatar sx={{ width: 100, height: 100, textTransform: "uppercase" }}>
+					{getInitials(currentUser.displayName ?? currentUser.email)}
+				</Avatar>
+				<Stack spacing={2}>
+					<TextField
+						label="Display name"
+						defaultValue={currentUser.displayName}
+						inputRef={displayNameInputRef}
+					/>
+					<Button variant="contained" onClick={changeProfile}>
+						Update
+					</Button>
+				</Stack>
+			</Stack>
+
+			<Stack spacing={2}>
+				<TextField
+					type="email"
+					label="Email"
+					variant="filled"
+					defaultValue={currentUser.email}
+					inputRef={emailInputRef}
+					required
+				/>
+				<Button variant="contained" onClick={changeEmailAddress}>
+					Update
+				</Button>
+			</Stack>
+
+			<Stack spacing={2}>
+				<TextField
+					type="password"
+					label="New password"
+					variant="filled"
+					inputRef={newPasswordInputRef}
+					inputProps={{ minLength: 6 }}
+					required
+				/>
+				<Button variant="contained" onClick={changePassword}>
+					Update
+				</Button>
+			</Stack>
+		</Fragment>
+	);
+}
