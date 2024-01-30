@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { BookContext } from "./contexts/BookContext";
 import { BorrowContext, borrowTestData } from "./contexts/BorrowContext";
+import { RequestContext, requestTestData } from "./contexts/RequestContext";
 
 import { Account } from "./pages/Account";
 import { Books } from "./pages/Books";
@@ -14,6 +15,7 @@ import { Reauthenticate } from "./pages/auth/Reauthenticate";
 import { ResetPassword } from "./pages/auth/ResetPassword";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
+import { Request } from "./pages/Request";
 
 import { Books as AdminBooks } from "./pages/admin/books/Books";
 import { Layout as AdminLayout } from "./pages/admin/Layout";
@@ -34,6 +36,7 @@ function AppRouter() {
 						<Route path="/books" element={<Books />} />
 						<Route path="/borrows" element={<Borrows />} />
 						<Route path="/account" element={<Account />} />
+						<Route path="/requests" element={<Request />} />
 					</Route>
 					<Route element={<AdminLayout />}>
 						<Route path="/admin/account" element={<Account />} />
@@ -49,11 +52,14 @@ function AppRouter() {
 function App() {
 	const [books, setBooks] = useState([]);
 	const [borrows, setBorrows] = useState(borrowTestData);
+	const [requests, setRequests] = useState(requestTestData);
 
 	return (
 		<BookContext.Provider value={{ books, setBooks }}>
 			<BorrowContext.Provider value={{ borrows, setBorrows }}>
-				<AppRouter />
+				<RequestContext.Provider value={{ requests, setRequests }}>
+					<AppRouter />
+				</RequestContext.Provider>
 			</BorrowContext.Provider>
 		</BookContext.Provider>
 	);

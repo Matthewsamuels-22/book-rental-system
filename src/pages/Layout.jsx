@@ -78,7 +78,7 @@ export function Layout() {
 					/>
 					<Tab
 						component={Link}
-						to="/"
+						to="/requests"
 						label="Requests"
 						icon={<FaQuestion />}
 						iconPosition="start"
