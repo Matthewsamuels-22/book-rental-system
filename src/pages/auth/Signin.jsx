@@ -18,6 +18,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import { auth } from "../../firebase";
+import { userIsAdmin } from "../../helpers/firestore/users";
 
 export function Signin() {
 	const navigate = useNavigate();
@@ -46,6 +47,12 @@ export function Signin() {
 
 		window.localStorage.setItem("rememberMe", rememberMe);
 		console.log(userCredential);
+
+		if (await userIsAdmin(userCredential.user.uid)) {
+			navigate("/admin/books");
+			return;
+		}
+
 		navigate("/");
 	}
 

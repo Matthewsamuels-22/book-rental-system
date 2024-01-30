@@ -7,17 +7,22 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import { BookContext } from "../contexts/BookContext";
+import { addBook, updateBook } from "../helpers/firestore/books";
 
 function createAuthor() {
 	return {
-		id: window.crypto.randomUUID(),
+		uuid: window.crypto.randomUUID(),
 		name: "",
 	};
 }
 
 export function BookForm(props) {
 	const { books, setBooks } = useContext(BookContext);
-	const [authors, setAuthors] = useState([createAuthor()]);
+	const [authors, setAuthors] = useState(
+		props.book?.authors.map((x) => ({ uuid: window.crypto.randomUUID(), name: x })) ?? [
+			createAuthor(),
+		],
+	);
 
 	function addAuthor() {
 		setAuthors([...authors, createAuthor()]);
@@ -27,7 +32,7 @@ export function BookForm(props) {
 		setAuthors(authors.filter((_, index) => index !== authorIndex));
 	}
 
-	function handleSubmit(event) {
+	async function handleSubmit(event) {
 		event.preventDefault();
 		const formData = new FormData(event.target);
 
@@ -39,26 +44,35 @@ export function BookForm(props) {
 
 		const bookData = {
 			title,
-			edition,
-			volume,
+			edition: parseInt(edition) || 0,
+			volume: parseInt(volume) || 0,
 			publisher,
-			yearPublished,
+			yearPublished: parseInt(yearPublished) || 0,
 			authors: authors.map((_, index) => formData.get("author-" + index)),
-			id: window.crypto.randomUUID(),
 		};
 
-		setBooks([...books, bookData]);
-		console.log(bookData);
+		console.debug("BookForm_handleSubmit:", bookData);
+
+		if (props.book == null) {
+			bookData.id = await addBook(bookData);
+			setBooks([...books, bookData]);
+		} else {
+			await updateBook(props.book.id, bookData);
+			bookData.id = props.book.id;
+			const bookIndex = books.findIndex((x) => x.id === props.book.id);
+			setBooks(books.toSpliced(bookIndex, 1, bookData));
+		}
+
 		props.postSubmit();
 	}
 
 	return (
 		<Stack component="form" id={props.id} onSubmit={handleSubmit} spacing={2}>
-			<TextField label="Title" name="title" required />
+			<TextField label="Title" name="title" defaultValue={props.book?.title} required />
 			<Stack component="fieldset" border="none" padding={0} spacing={2}>
 				<Typography component="legend">Authors</Typography>
 				{authors.map((author, index) => (
-					<Stack key={author.id} direction="row" spacing={2}>
+					<Stack key={author.uuid} direction="row" spacing={2}>
 						<TextField
 							label="Author"
 							name={"author-" + index}
@@ -82,15 +96,32 @@ export function BookForm(props) {
 				</Button>
 			</Stack>
 			<Stack direction="row" spacing={2}>
-				<TextField type="number" label="Edition" name="edition" inputProps={{ min: 0 }} />
-				<TextField type="number" label="Volume" name="volume" inputProps={{ min: 0 }} />
+				<TextField
+					type="number"
+					label="Edition"
+					name="edition"
+					defaultValue={props.book?.edition}
+					inputProps={{ min: 0 }}
+				/>
+				<TextField
+					type="number"
+					label="Volume"
+					name="volume"
+					defaultValue={props.book?.volume}
+					inputProps={{ min: 0 }}
+				/>
 			</Stack>
 			<Stack direction="row" flexWrap="wrap" spacing={2} useFlexGap>
-				<TextField label="Publisher" name="publisher" />
+				<TextField
+					label="Publisher"
+					name="publisher"
+					defaultValue={props.book?.publisher}
+				/>
 				<TextField
 					type="number"
 					label="Year published"
 					name="year-published"
+					defaultValue={props.book?.yearPublished}
 					inputProps={{ min: 0 }}
 				/>
 			</Stack>
@@ -101,4 +132,13 @@ export function BookForm(props) {
 BookForm.propTypes = {
 	id: PropTypes.string.isRequired,
 	postSubmit: PropTypes.func.isRequired,
+	book: PropTypes.exact({
+		id: PropTypes.string.isRequired,
+		title: PropTypes.string.isRequired,
+		authors: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+		edition: PropTypes.number.isRequired,
+		volume: PropTypes.number.isRequired,
+		publisher: PropTypes.string.isRequired,
+		yearPublished: PropTypes.number.isRequired,
+	}),
 };
