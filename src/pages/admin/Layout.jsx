@@ -2,17 +2,9 @@ import { signOut } from "firebase/auth";
 import { useState } from "react";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 
-import {
-	FaBell,
-	FaBookOpen,
-	FaBorderAll,
-	FaComment,
-	FaFile,
-	FaQuestion,
-	FaSignOutAlt,
-	FaUser,
-} from "react-icons/fa";
+import { FaFile, FaQuestion, FaSignOutAlt, FaUser } from "react-icons/fa";
 
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
@@ -20,12 +12,12 @@ import Stack from "@mui/material/Stack";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 
 export function Layout() {
 	const { currentUserIsAdmin } = useOutletContext();
 
-	if (currentUserIsAdmin) return <h1>404: Not found</h1>;
+	if (!currentUserIsAdmin) return <h1>404: Not found</h1>;
 
 	const [tabIndex, setTabIndex] = useState(0);
 
@@ -35,7 +27,7 @@ export function Layout() {
 
 	return (
 		<Stack direction="row">
-			<div className="sidenav">
+			<Box className="sidenav">
 				<Button type="button" onClick={() => signOut(auth)} endIcon={<FaSignOutAlt />}>
 					Sign Out
 				</Button>
@@ -43,55 +35,27 @@ export function Layout() {
 				<Tabs orientation="vertical" value={tabIndex} onChange={handleTabChange}>
 					<Tab
 						component={Link}
-						to="/"
-						label="Dashboard"
-						icon={<FaBorderAll />}
-						iconPosition="start"
-					/>
-					<Tab
-						component={Link}
-						to="/account"
+						to="/admin/account"
 						label="Account"
 						icon={<FaUser />}
 						iconPosition="start"
 					/>
 					<Tab
 						component={Link}
-						to="/"
-						label="Chat"
-						icon={<FaComment />}
-						iconPosition="start"
-					/>
-					<Tab
-						component={Link}
-						to="/"
-						label="Messages"
-						icon={<FaBell />}
-						iconPosition="start"
-					/>
-					<Tab
-						component={Link}
-						to="/borrows"
-						label="Borrows"
-						icon={<FaBookOpen />}
-						iconPosition="start"
-					/>
-					<Tab
-						component={Link}
-						to="/"
-						label="Requests"
-						icon={<FaQuestion />}
-						iconPosition="start"
-					/>
-					<Tab
-						component={Link}
-						to="/books"
+						to="/admin/books"
 						label="Books"
 						icon={<FaFile />}
 						iconPosition="start"
 					/>
+					<Tab
+						component={Link}
+						to="/admin/requests"
+						label="Requests"
+						icon={<FaQuestion />}
+						iconPosition="start"
+					/>
 				</Tabs>
-			</div>
+			</Box>
 			<Container fixed>
 				<Outlet />
 			</Container>

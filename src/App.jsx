@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { BookContext, bookTestData } from "./contexts/BookContext";
+import { BookContext } from "./contexts/BookContext";
 import { BorrowContext, borrowTestData } from "./contexts/BorrowContext";
 
 import { Account } from "./pages/Account";
@@ -14,6 +14,9 @@ import { Reauthenticate } from "./pages/auth/Reauthenticate";
 import { ResetPassword } from "./pages/auth/ResetPassword";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
+
+import { Books as AdminBooks } from "./pages/admin/books/Books";
+import { Layout as AdminLayout } from "./pages/admin/Layout";
 
 import "./App.css";
 
@@ -32,6 +35,11 @@ function AppRouter() {
 						<Route path="/borrows" element={<Borrows />} />
 						<Route path="/account" element={<Account />} />
 					</Route>
+					<Route element={<AdminLayout />}>
+						<Route path="/admin/account" element={<Account />} />
+						<Route path="/admin/books" element={<AdminBooks />} />
+						<Route path="/admin/requests" element={<AdminBooks />} />
+					</Route>
 				</Route>
 			</Routes>
 		</BrowserRouter>
@@ -39,7 +47,7 @@ function AppRouter() {
 }
 
 function App() {
-	const [books, setBooks] = useState(bookTestData);
+	const [books, setBooks] = useState([]);
 	const [borrows, setBorrows] = useState(borrowTestData);
 
 	return (
