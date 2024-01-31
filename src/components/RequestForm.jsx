@@ -1,46 +1,49 @@
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { TextField } from "@mui/material";
-import { Stack } from "@mui/system";
-import { dateFromIsoDateString } from "../utilities/dateparser";
+
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+
 import { RequestContext } from "../contexts/RequestContext";
-import { dateToIsoDateString } from "../utilities/dateformat";
+import { auth } from "../firebase";
 
 export function RequestForm(props) {
-    const { requests, setRequests } = useContext(RequestContext);
+	const { requests, setRequests } = useContext(RequestContext);
 
-    function handlerequest(event) {
-        event.preventDefault();
-        const formData = new FormData(event.target);
+	function handleSubmit(event) {
+		event.preventDefault();
+		const formData = new FormData(event.target);
 
-        const requester = formData.get("requester");
-        const book = formData.get("book");
-        const dateRequested = dateFromIsoDateString(formData.get("dateRequested"));
-        const amountRequested = formData.get("amountRequested");
+		const book = formData.get("book");
+		const quantity = formData.get("quantity");
 
-        const requestData = {
-            requester,
-            book,
-            dateRequested,
-            amountRequested,
-            id: window.crypto.randomUUID(),
-        };
-        
-        setRequests([...requests, requestData]);
-        console.log(requestData);
-        props.postSubmit();
-    }
-    return (
-        <Stack component="form" id={props.id} onSubmit={handlerequest} spacing={2}>
-            <TextField label="Requester" name="requester" required />
-            <TextField label="Book" name="book" required />
-            <TextField label="Date Requested" name="dateRequested" defaultValue={dateToIsoDateString(new Date())} type="datetime" fullWidth required />
-            <TextField label="Amount Requested" name="amountRequested" type="number" required />
-        </Stack>
-    );
+		const requestData = {
+			book,
+			quantity,
+			requester: auth.currentUser.uid,
+			requestedDate: new Date(),
+			id: window.crypto.randomUUID(),
+		};
+
+		setRequests([...requests, requestData]);
+		console.log(requestData);
+		props.postSubmit();
+	}
+	return (
+		<Stack component="form" id={props.id} onSubmit={handleSubmit} spacing={2}>
+			<TextField label="Book" name="book" required />
+			<TextField
+				type="number"
+				label="Quantity"
+				name="quantity"
+				required
+				inputProps={{ min: 0 }}
+			/>
+		</Stack>
+	);
 }
 
 RequestForm.propTypes = {
-    id: PropTypes.string.isRequired,
-    postSubmit: PropTypes.func.isRequired,
+	id: PropTypes.string.isRequired,
+	postSubmit: PropTypes.func.isRequired,
 };
