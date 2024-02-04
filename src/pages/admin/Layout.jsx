@@ -13,6 +13,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 
 import { auth } from "../../firebase";
+import { ColorModeSwitch } from "../../components/ColorModeSwitch";
 
 export function Layout() {
 	const { currentUserIsAdmin } = useOutletContext();
@@ -55,6 +56,7 @@ export function Layout() {
 						iconPosition="start"
 					/>
 				</Tabs>
+				<ColorModeSwitch />
 			</Box>
 			<Container fixed>
 				<Outlet />
