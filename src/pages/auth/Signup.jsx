@@ -12,11 +12,14 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import { auth } from "../../firebase";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 export function Signup() {
 	const navigate = useNavigate();
 	const emailInputRef = useRef(null);
 	const passwordInputRef = useRef(null);
+
+	useDocumentTitle("Sign up");
 
 	async function handleSignUp(event) {
 		event.preventDefault();

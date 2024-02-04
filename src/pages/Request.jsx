@@ -8,6 +8,7 @@ import { RequestTable } from "../components/RequestTable";
 import { BookContext } from "../contexts/BookContext";
 import { getBooks } from "../helpers/firestore/books";
 import { RequestContext } from "../contexts/RequestContext";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export function Request() {
 	const { books, setBooks } = useContext(BookContext);
@@ -26,6 +27,8 @@ export function Request() {
 			// fetch requests
 		}
 	}, []);
+
+	useDocumentTitle("Requests");
 
 	return (
 		<Fragment>

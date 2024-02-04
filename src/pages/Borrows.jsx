@@ -9,6 +9,7 @@ import { BorrowTable } from "../components/BorrowTable";
 import { BookContext } from "../contexts/BookContext";
 import { getBooks } from "../helpers/firestore/books";
 import { BorrowContext } from "../contexts/BorrowContext";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export function Borrows() {
 	const { books, setBooks } = useContext(BookContext);
@@ -27,6 +28,8 @@ export function Borrows() {
 			// fetch borrows
 		}
 	}, []);
+
+	useDocumentTitle("Borrows");
 
 	return (
 		<Fragment>

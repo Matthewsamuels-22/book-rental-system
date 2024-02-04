@@ -8,6 +8,7 @@ import { StudentTable } from "./StudentTable";
 import { StudentDialog } from "./StudentDialog";
 import { StudentContext } from "../../contexts/StudentContext";
 import { deleteStudent, getStudents } from "../../helpers/firestore/students";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 export function Students() {
 	const { students, setStudents } = useContext(StudentContext);
@@ -23,6 +24,8 @@ export function Students() {
 			.then((x) => setStudents(x))
 			.catch(console.error);
 	}, []);
+
+	useDocumentTitle("Students");
 
 	function handleAdd() {
 		setStudentSelected(null);

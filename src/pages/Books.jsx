@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import { BookTable } from "../components/BookTable";
 import { getBooks } from "../helpers/firestore/books";
 import { BookContext } from "../contexts/BookContext";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export function Books() {
 	const { books, setBooks } = useContext(BookContext);
@@ -17,6 +18,8 @@ export function Books() {
 			.then((x) => setBooks(x))
 			.catch(console.error);
 	}, []);
+
+	useDocumentTitle("Books");
 
 	return (
 		<Fragment>

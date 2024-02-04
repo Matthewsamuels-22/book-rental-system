@@ -6,10 +6,13 @@ import TextField from "@mui/material/TextField";
 
 import { RequestTable } from "./RequestTable";
 import { RequestContext } from "../../../contexts/RequestContext";
+import { useDocumentTitle } from "../../../hooks/useDocumentTitle";
 
 export function Requests() {
 	const { requests } = useContext(RequestContext)
 	const [requestSelection, setRequestSelection] = useState([]);
+
+	useDocumentTitle("Requests")
 
 	function markAsDone() {
 

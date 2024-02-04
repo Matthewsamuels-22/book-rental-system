@@ -9,6 +9,7 @@ import { BookContext } from "../../../contexts/BookContext";
 import { BookDialog } from "../../../components/BookDialog";
 import { deleteBook, getBooks } from "../../../helpers/firestore/books";
 import { BookTable } from "./BookTable";
+import { useDocumentTitle } from "../../../hooks/useDocumentTitle";
 
 export function Books() {
 	const { books, setBooks } = useContext(BookContext);
@@ -24,6 +25,8 @@ export function Books() {
 			.then((x) => setBooks(x))
 			.catch(console.error);
 	}, []);
+
+	useDocumentTitle("Books")
 
 	function handleAdd() {
 		setBookSelected(null);

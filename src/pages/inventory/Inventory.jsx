@@ -8,6 +8,7 @@ import { InventoryTable } from "./InventoryTable";
 import { InventoryDialog } from "./InventoryDialog";
 import { InventoryContext } from "../../contexts/InventoryContext";
 import { deleteInventoryItem, getInventory } from "../../helpers/firestore/inventory";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 export function Inventory() {
 	const { inventory, setInventory } = useContext(InventoryContext)
@@ -23,6 +24,8 @@ export function Inventory() {
 			.then((x) => setInventory(x))
 			.catch(console.error);
 	}, []);
+
+	useDocumentTitle("Inventory");
 
 	function handleAdd() {
 		setEntrySelected(null);
