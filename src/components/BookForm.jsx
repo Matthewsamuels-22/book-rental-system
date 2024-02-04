@@ -51,8 +51,6 @@ export function BookForm(props) {
 			authors: authors.map((_, index) => formData.get("author-" + index)),
 		};
 
-		console.debug("BookForm_handleSubmit:", bookData);
-
 		if (props.book == null) {
 			bookData.id = await addBook(bookData);
 			setBooks([...books, bookData]);

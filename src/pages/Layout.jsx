@@ -13,6 +13,7 @@ import {
 	FaUser,
 } from "react-icons/fa";
 
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
@@ -21,6 +22,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 
 import { auth } from "../firebase";
+import { ColorModeSwitch } from "../components/ColorModeSwitch";
 
 export function Layout() {
 	const { currentUserIsAdmin } = useOutletContext();
@@ -35,12 +37,12 @@ export function Layout() {
 
 	return (
 		<Stack direction="row">
-			<div className="sidenav">
+			<Box className="sidenav">
 				<Button type="button" onClick={() => signOut(auth)} endIcon={<FaSignOutAlt />}>
 					Sign Out
 				</Button>
 				<Divider variant="middle" />
-				<Tabs orientation="vertical" value={tabIndex} onChange={handleTabChange}>
+				<Tabs orientation="vertical" value={tabIndex} onChange={handleTabChange} role="navigation">
 					<Tab
 						component={Link}
 						to="/"
@@ -57,15 +59,15 @@ export function Layout() {
 					/>
 					<Tab
 						component={Link}
-						to="/"
-						label="Chat"
+						to="/inventory"
+						label="Inventory"
 						icon={<FaComment />}
 						iconPosition="start"
 					/>
 					<Tab
 						component={Link}
-						to="/"
-						label="Messages"
+						to="/students"
+						label="Students"
 						icon={<FaBell />}
 						iconPosition="start"
 					/>
@@ -91,7 +93,8 @@ export function Layout() {
 						iconPosition="start"
 					/>
 				</Tabs>
-			</div>
+				<ColorModeSwitch />
+			</Box>
 			<Container fixed>
 				<Outlet />
 			</Container>

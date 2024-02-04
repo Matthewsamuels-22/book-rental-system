@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { useContext } from "react";
 
 import Checkbox from "@mui/material/Checkbox";
 import Table from "@mui/material/Table";
@@ -9,11 +8,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { BookContext } from "../../../contexts/BookContext";
 
 export function BookTable(props) {
-	const { books } = useContext(BookContext);
-
 	function handleBookSelect(event) {
 		const checkbox = event.target;
 		const bookId = checkbox.dataset.id;
@@ -41,7 +37,7 @@ export function BookTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{books.map((book, index) => (
+					{props.books.map((book, index) => (
 						<TableRow key={index}>
 							<TableCell>
 								<Checkbox
@@ -67,4 +63,15 @@ export function BookTable(props) {
 BookTable.propTypes = {
 	bookSelection: PropTypes.arrayOf(PropTypes.string).isRequired,
 	setBookSelection: PropTypes.func.isRequired,
+	books: PropTypes.arrayOf(
+		PropTypes.exact({
+			id: PropTypes.string.isRequired,
+			title: PropTypes.string.isRequired,
+			authors: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+			edition: PropTypes.number.isRequired,
+			volume: PropTypes.number.isRequired,
+			publisher: PropTypes.string.isRequired,
+			yearPublished: PropTypes.number.isRequired,
+		}).isRequired
+	).isRequired
 };

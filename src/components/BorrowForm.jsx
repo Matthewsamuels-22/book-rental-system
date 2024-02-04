@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
@@ -8,16 +8,19 @@ import TextField from "@mui/material/TextField";
 import { BorrowContext } from "../contexts/BorrowContext";
 import { dateToIsoDateString } from "../utilities/dateformat";
 import { dateFromIsoDateString } from "../utilities/dateparser";
+import { BookAutocomplete } from "./BookAutocomplete";
+import { addBorrowEntry, updateBorrowEntry } from "../helpers/firestore/borrows";
 
 export function BorrowForm(props) {
 	const { borrows, setBorrows } = useContext(BorrowContext);
+	const bookInputRef = useRef(null)
 
-	function handleSubmit(event) {
+	async function handleSubmit(event) {
 		event.preventDefault();
 		const formData = new FormData(event.target);
 
 		const borrower = formData.get("borrower");
-		const book = formData.get("book");
+		const book = bookInputRef.current.dataset.id;
 		const dateBorrowed = dateFromIsoDateString(formData.get("date-borrowed"));
 		const dateReturned = dateFromIsoDateString(formData.get("date-returned"));
 		const conditionBorrowed = formData.get("condition-borrowed");
@@ -30,18 +33,25 @@ export function BorrowForm(props) {
 			dateReturned,
 			conditionBorrowed,
 			conditionReturned,
-			id: window.crypto.randomUUID(),
 		};
 
-		setBorrows([...borrows, borrowData]);
-		console.log(borrowData);
+		if (props.borrowEntry == null) {
+			borrowData.id = await addBorrowEntry(borrowData)
+			setBorrows([...borrows, borrowData])
+		} else {
+			await updateBorrowEntry(props.borrowEntry.id, borrowData)
+			borrowData.id = props.borrowEntry.id
+			const borrowIndex = borrows.findIndex(x => x.id === borrowData.id)
+			setBorrows(borrows.toSpliced(borrowIndex, 1, borrowData));
+		}
+
 		props.postSubmit();
 	}
 
 	return (
 		<Stack component="form" id={props.id} onSubmit={handleSubmit} spacing={2}>
 			<TextField label="Borrower" name="borrower" required />
-			<TextField label="Book" name="book" required />
+			<BookAutocomplete ref={bookInputRef} required />
 			<Stack direction="row" spacing={2}>
 				<TextField
 					type="date"
@@ -87,4 +97,13 @@ export function BorrowForm(props) {
 BorrowForm.propTypes = {
 	id: PropTypes.string.isRequired,
 	postSubmit: PropTypes.func.isRequired,
+	borrowEntry: PropTypes.exact({
+		id: PropTypes.string.isRequired,
+		borrower: PropTypes.string.isRequired,
+		book: PropTypes.string.isRequired,
+		dateBorrowed: PropTypes.instanceOf(Date).isRequired,
+		dateReturned: PropTypes.instanceOf(Date),
+		conditionBorrowed: PropTypes.string.isRequired,
+		conditionReturned: PropTypes.string,
+	})
 };

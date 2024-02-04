@@ -51,6 +51,7 @@ export function Books() {
 					Add
 				</Button>
 				<Button
+					color="secondary"
 					onClick={handleEdit}
 					disabled={bookSelection.length !== 1}
 					startIcon={<FaPen />}>
@@ -63,10 +64,10 @@ export function Books() {
 					startIcon={<FaTrash />}>
 					Delete
 				</Button>
-				<TextField type="search" />
+				<TextField type="search" placeholder="Search" />
 			</Stack>
 
-			<BookTable bookSelection={bookSelection} setBookSelection={setBookSelection} />
+			<BookTable books={books} bookSelection={bookSelection} setBookSelection={setBookSelection} />
 			<BookDialog open={open} onClose={() => setOpen(false)} book={bookSelected} />
 		</Fragment>
 	);

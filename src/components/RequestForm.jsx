@@ -1,37 +1,39 @@
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
 import { RequestContext } from "../contexts/RequestContext";
 import { auth } from "../firebase";
+import { BookAutocomplete } from "./BookAutocomplete";
+import { addBookRequest } from "../helpers/firestore/requests";
 
 export function RequestForm(props) {
 	const { requests, setRequests } = useContext(RequestContext);
+	const bookInputRef = useRef(null)
 
-	function handleSubmit(event) {
+	async function handleSubmit(event) {
 		event.preventDefault();
 		const formData = new FormData(event.target);
 
-		const book = formData.get("book");
+		const book = bookInputRef.current.dataset.id
 		const quantity = formData.get("quantity");
 
 		const requestData = {
 			book,
-			quantity,
+			quantity: parseInt(quantity),
 			requester: auth.currentUser.uid,
 			requestedDate: new Date(),
-			id: window.crypto.randomUUID(),
 		};
 
+		requestData.id = await addBookRequest(requestData)
 		setRequests([...requests, requestData]);
-		console.log(requestData);
 		props.postSubmit();
 	}
 	return (
 		<Stack component="form" id={props.id} onSubmit={handleSubmit} spacing={2}>
-			<TextField label="Book" name="book" required />
+			<BookAutocomplete ref={bookInputRef} required />
 			<TextField
 				type="number"
 				label="Quantity"
