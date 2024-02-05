@@ -19,6 +19,7 @@ import Typography from "@mui/material/Typography";
 
 import { auth } from "../../firebase";
 import { userIsAdmin } from "../../helpers/firestore/users";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 export function Signin() {
 	const navigate = useNavigate();
@@ -31,6 +32,8 @@ export function Signin() {
 		const shouldRememberMe = window.localStorage.getItem("rememberMe") === "true";
 		if (shouldRememberMe) setRememberMe(true);
 	}, []);
+
+	useDocumentTitle("Sign in to " + import.meta.env.VITE_APP_TITLE, false);
 
 	async function handleSignIn(event) {
 		event.preventDefault();

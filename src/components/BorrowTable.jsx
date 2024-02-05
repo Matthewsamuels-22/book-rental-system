@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import PropTypes from "prop-types";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,12 +7,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { BorrowContext } from "../contexts/BorrowContext";
 import { dateToIsoDateString } from "../utilities/dateformat";
 
-export function BorrowTable() {
-	const { borrows } = useContext(BorrowContext);
-
+export function BorrowTable(props) {
 	return (
 		<TableContainer>
 			<Table>
@@ -28,7 +25,7 @@ export function BorrowTable() {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{borrows.map((entry, index) => (
+					{props.borrows.map((entry, index) => (
 						<TableRow key={index}>
 							<TableCell>{entry.id}</TableCell>
 							<TableCell>{entry.borrower}</TableCell>
@@ -43,4 +40,18 @@ export function BorrowTable() {
 			</Table>
 		</TableContainer>
 	);
+}
+
+BorrowTable.propTypes = {
+	borrows: PropTypes.arrayOf(
+		PropTypes.exact({
+			id: PropTypes.string.isRequired,
+			borrower: PropTypes.string.isRequired,
+			book: PropTypes.string.isRequired,
+			dateBorrowed: PropTypes.instanceOf(Date).isRequired,
+			dateReturned: PropTypes.instanceOf(Date),
+			conditionBorrowed: PropTypes.string.isRequired,
+			conditionReturned: PropTypes.string,
+		}).isRequired
+	).isRequired
 }

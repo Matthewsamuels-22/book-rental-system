@@ -11,12 +11,12 @@ import { BookForm } from "./BookForm";
 export function BookDialog(props) {
 	return (
 		<Dialog open={props.open} onClose={props.onClose}>
-			<DialogTitle>Book</DialogTitle>
+			<DialogTitle fontWeight='bold'>Book</DialogTitle>
 			<DialogContent>
 				<BookForm id="book-form" book={props.book} postSubmit={props.onClose} />
 			</DialogContent>
 			<DialogActions>
-				<Button type="reset" color="secondary" form="book-form" onClick={props.onClose}>
+				<Button type="reset" form="book-form" color="secondary" onClick={props.onClose}>
 					Cancel
 				</Button>
 				<Button type="submit" form="book-form" autoFocus>

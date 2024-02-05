@@ -12,15 +12,15 @@ import { RequestForm } from "./RequestForm";
 export function RequestDialog(props) {
 	return (
 		<Dialog open={props.open} onClose={props.onClose}>
-			<DialogTitle>Request</DialogTitle>
+			<DialogTitle fontWeight='bold'>Request</DialogTitle>
 			<DialogContent>
 				<RequestForm id="request-form" postSubmit={props.onClose} />
 			</DialogContent>
 			<DialogActions>
-				<Button type="reset" color="secondary" form="request-form" onClick={props.onClose}>
+				<Button type="reset" form="request-form" color="secondary" onClick={props.onClose}>
 					Cancel
 				</Button>
-				<Button type="submit" form="request-form">
+				<Button type="submit" form="request-form" autoFocus>
 					Submit
 				</Button>
 			</DialogActions>

@@ -8,6 +8,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
 import { auth } from "../firebase";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const AuthErrorCodes = { REQUIRES_RECENT_LOGIN: "auth/requires-recent-login" };
 
@@ -17,9 +18,9 @@ const AuthErrorCodes = { REQUIRES_RECENT_LOGIN: "auth/requires-recent-login" };
 function getInitials(text) {
 	return text.includes(" ")
 		? text
-				.split(" ")
-				.map((x) => x[0])
-				.join("")
+			.split(" ")
+			.map((x) => x[0])
+			.join("")
 		: text.substring(0, 6);
 }
 
@@ -36,6 +37,8 @@ export function Account() {
 	const [reauthenticated, setReauthenticated] = useState(
 		searchParams.get("reauthenticated") === "true",
 	);
+
+	useDocumentTitle("Account");
 
 	async function changeProfile() {
 		await updateProfile(currentUser, { displayName: displayNameInputRef.current.value });

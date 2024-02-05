@@ -11,10 +11,13 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import { auth } from "../../firebase";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 export function Reauthenticate() {
 	const navigate = useNavigate();
 	const passwordInputRef = useRef(null);
+
+	useDocumentTitle("Reauthenticate")
 
 	async function handleReauthentication(event) {
 		event.preventDefault();

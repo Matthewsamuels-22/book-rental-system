@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import PropTypes from "prop-types";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,11 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { BookContext } from "../contexts/BookContext";
-
-export function BookTable() {
-	const { books } = useContext(BookContext);
-
+export function BookTable(props) {
 	return (
 		<TableContainer>
 			<Table>
@@ -27,7 +23,7 @@ export function BookTable() {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{books.map((book, index) => (
+					{props.books.map((book, index) => (
 						<TableRow key={index}>
 							<TableCell>{book.id}</TableCell>
 							<TableCell>{book.title}</TableCell>
@@ -42,4 +38,18 @@ export function BookTable() {
 			</Table>
 		</TableContainer>
 	);
+}
+
+BookTable.propTypes = {
+	books: PropTypes.arrayOf(
+		PropTypes.exact({
+			id: PropTypes.string.isRequired,
+			title: PropTypes.string.isRequired,
+			authors: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+			edition: PropTypes.number.isRequired,
+			volume: PropTypes.number.isRequired,
+			publisher: PropTypes.string.isRequired,
+			yearPublished: PropTypes.number.isRequired,
+		}).isRequired
+	).isRequired
 }

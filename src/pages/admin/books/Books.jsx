@@ -9,6 +9,7 @@ import { BookContext } from "../../../contexts/BookContext";
 import { BookDialog } from "../../../components/BookDialog";
 import { deleteBook, getBooks } from "../../../helpers/firestore/books";
 import { BookTable } from "./BookTable";
+import { useDocumentTitle } from "../../../hooks/useDocumentTitle";
 
 export function Books() {
 	const { books, setBooks } = useContext(BookContext);
@@ -24,6 +25,8 @@ export function Books() {
 			.then((x) => setBooks(x))
 			.catch(console.error);
 	}, []);
+
+	useDocumentTitle("Books")
 
 	function handleAdd() {
 		setBookSelected(null);
@@ -51,6 +54,7 @@ export function Books() {
 					Add
 				</Button>
 				<Button
+					color="secondary"
 					onClick={handleEdit}
 					disabled={bookSelection.length !== 1}
 					startIcon={<FaPen />}>
@@ -63,10 +67,10 @@ export function Books() {
 					startIcon={<FaTrash />}>
 					Delete
 				</Button>
-				<TextField type="search" />
+				<TextField type="search" placeholder="Search" />
 			</Stack>
 
-			<BookTable bookSelection={bookSelection} setBookSelection={setBookSelection} />
+			<BookTable books={books} bookSelection={bookSelection} setBookSelection={setBookSelection} />
 			<BookDialog open={open} onClose={() => setOpen(false)} book={bookSelected} />
 		</Fragment>
 	);

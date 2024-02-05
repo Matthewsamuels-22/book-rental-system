@@ -10,9 +10,12 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import { auth } from "../../firebase";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 export function ResetPassword() {
 	const emailInputRef = useRef(null);
+
+	useDocumentTitle("Reset password")
 
 	async function handleResetPassword(event) {
 		event.preventDefault();

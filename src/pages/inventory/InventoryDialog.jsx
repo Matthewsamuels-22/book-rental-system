@@ -6,20 +6,20 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import { BorrowForm } from "./BorrowForm";
+import { InventoryForm } from "./InventoryForm";
 
-export function BorrowDialog(props) {
+export function InventoryDialog(props) {
 	return (
 		<Dialog open={props.open} onClose={props.onClose}>
-			<DialogTitle fontWeight='bold'>Borrow</DialogTitle>
+			<DialogTitle fontWeight='bold'>Inventory</DialogTitle>
 			<DialogContent>
-				<BorrowForm id="borrow-form" postSubmit={props.onClose} />
+				<InventoryForm id="inventory-form" inventory={props.inventory} postSubmit={props.onClose} />
 			</DialogContent>
 			<DialogActions>
-				<Button type="reset" form="borrow-form" color="secondary" onClick={props.onClose}>
+				<Button type="reset" form="inventory-form" color="secondary" variant="contained" onClick={props.onClose}>
 					Cancel
 				</Button>
-				<Button type="submit" form="borrow-form" autoFocus>
+				<Button type="submit" form="inventory-form" variant="contained" autoFocus>
 					Add
 				</Button>
 			</DialogActions>
@@ -27,16 +27,12 @@ export function BorrowDialog(props) {
 	);
 }
 
-BorrowDialog.propTypes = {
+InventoryDialog.propTypes = {
 	open: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
-	borrowEntry: PropTypes.exact({
+	inventory: PropTypes.exact({
 		id: PropTypes.string.isRequired,
-		borrower: PropTypes.string.isRequired,
 		book: PropTypes.string.isRequired,
-		dateBorrowed: PropTypes.instanceOf(Date).isRequired,
-		dateReturned: PropTypes.instanceOf(Date),
-		conditionBorrowed: PropTypes.string.isRequired,
-		conditionReturned: PropTypes.string,
-	})
+		quantity: PropTypes.number.isRequired,
+	}),
 };
