@@ -30,6 +30,7 @@ import { Layout as AdminLayout } from "./pages/admin/Layout";
 import { Requests as AdminRequests } from "./pages/admin/requests/Requests";
 
 import "./App.css";
+import { NotFound } from "./pages/NotFound";
 
 function AppRouter() {
 	return (
@@ -49,11 +50,13 @@ function AppRouter() {
 						<Route path="/students" element={<Students />} />
 						<Route path="/inventory" element={<Inventory />} />
 					</Route>
+					
 					<Route element={<AdminLayout />}>
 						<Route path="/admin/account" element={<Account />} />
 						<Route path="/admin/books" element={<AdminBooks />} />
 						<Route path="/admin/requests" element={<AdminRequests />} />
 					</Route>
+					<Route path="*" element={<NotFound />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
