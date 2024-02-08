@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 
+import Checkbox from "@mui/material/Checkbox";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,12 +9,24 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 export function BookTable(props) {
+	function handleRecordSelect(event) {
+		const checkbox = event.target;
+		const recordId = checkbox.dataset.id;
+
+		if (checkbox.checked) {
+			props.setSelectedRecords([...props.selectedRecords, recordId]);
+			return;
+		}
+
+		props.setSelectedRecords(props.selectedRecords.filter((x) => x !== recordId));
+	}
+
 	return (
 		<TableContainer>
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell>ID</TableCell>
+						<TableCell></TableCell>
 						<TableCell>Title</TableCell>
 						<TableCell>Authors</TableCell>
 						<TableCell>Edition</TableCell>
@@ -23,9 +36,14 @@ export function BookTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.books.map((book, index) => (
+					{props.records.map((book, index) => (
 						<TableRow key={index}>
-							<TableCell>{book.id}</TableCell>
+							<TableCell>
+								<Checkbox
+									onChange={handleRecordSelect}
+									inputProps={{ "data-id": book.id }}
+								/>
+							</TableCell>
 							<TableCell>{book.title}</TableCell>
 							<TableCell>{book.authors.join(", ")}</TableCell>
 							<TableCell>{book.edition}</TableCell>
@@ -41,7 +59,9 @@ export function BookTable(props) {
 }
 
 BookTable.propTypes = {
-	books: PropTypes.arrayOf(
+	selectedRecords: PropTypes.arrayOf(PropTypes.string).isRequired,
+	setSelectedRecords: PropTypes.func.isRequired,
+	records: PropTypes.arrayOf(
 		PropTypes.exact({
 			id: PropTypes.string.isRequired,
 			title: PropTypes.string.isRequired,

@@ -21,7 +21,7 @@ export function StudentDialog(props) {
 					Cancel
 				</Button>
 				<Button type="submit" form="student-form" variant="contained" autoFocus>
-					Add
+					{props.student == null ? "Add" : "Edit"}
 				</Button>
 			</DialogActions>
 		</Dialog>

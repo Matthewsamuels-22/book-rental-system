@@ -25,6 +25,7 @@ export function RequestForm(props) {
 			quantity: parseInt(quantity),
 			requester: auth.currentUser.uid,
 			requestedDate: new Date(),
+			status: "pending"
 		};
 
 		requestData.id = await addBookRequest(requestData)

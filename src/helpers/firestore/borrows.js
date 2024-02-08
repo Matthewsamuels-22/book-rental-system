@@ -36,9 +36,13 @@ export async function getBorrowEntries() {
 	const querySnapshot = await getDocs(collectionRef);
 
 	querySnapshot.forEach((documentSnapshot) => {
+		const data = documentSnapshot.data();
+
 		entries.push({
-			...documentSnapshot.data(),
+			...data,
 			id: documentSnapshot.id,
+			dateBorrowed: data.dateBorrowed.toDate(),
+			dateReturned: data.dateReturned?.toDate()
 		});
 	});
 

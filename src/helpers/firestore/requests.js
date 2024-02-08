@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { firestore } from "../../firebase";
 
 /**
@@ -30,15 +30,24 @@ export async function addBookRequest(data) {
 	return documentRef.id;
 }
 
-export async function getBookRequests() {
+/**
+ * @param {string=} userId ID of user who made the request
+ */
+export async function getBookRequests(userId) {
 	const requests = [];
 	const collectionRef = collection(firestore, "requests");
-	const querySnapshot = await getDocs(collectionRef);
+
+	const querySnapshot = userId != null
+		? await getDocs(query(collectionRef, where('requester', '==', userId)))
+		: await getDocs(collectionRef);
 
 	querySnapshot.forEach((documentSnapshot) => {
+		const data = documentSnapshot.data();
+
 		requests.push({
-			...documentSnapshot.data(),
+			...data,
 			id: documentSnapshot.id,
+			requestedDate: data.requestedDate.toDate()
 		});
 	});
 

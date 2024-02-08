@@ -21,10 +21,10 @@ function formatAuthors(authors) {
 
 function BookAutocompleteRender(props, ref) {
 	const { books } = useContext(BookContext);
-	const [bookId, setBookId] = useState(null)
+	const [bookId, setBookId] = useState(props.defaultValue)
 
 	return (
-		<Autocomplete options={books} getOptionLabel={(option) => option.title} disableClearable
+		<Autocomplete options={books} getOptionLabel={(option) => option.title} defaultValue={books.find(x => x.id === bookId)} disableClearable
 			onChange={(event, value) => setBookId(value.id)}
 			renderOption={(properties, option) => (<Stack component="li" {...properties}>
 				<Typography component='div' fontWeight='bold' variant="body2" marginRight='auto'>{option.title}</Typography>
@@ -42,5 +42,6 @@ function BookAutocompleteRender(props, ref) {
 export const BookAutocomplete = forwardRef(BookAutocompleteRender)
 
 BookAutocomplete.propTypes = {
+	defaultValue: PropTypes.string,
 	required: PropTypes.bool
 }

@@ -10,7 +10,7 @@ import { InventoryForm } from "./InventoryForm";
 
 export function InventoryDialog(props) {
 	return (
-		<Dialog open={props.open} onClose={props.onClose}>
+		<Dialog open={props.open} onClose={props.onClose} fullWidth>
 			<DialogTitle fontWeight='bold'>Inventory</DialogTitle>
 			<DialogContent>
 				<InventoryForm id="inventory-form" inventory={props.inventory} postSubmit={props.onClose} />
@@ -20,7 +20,7 @@ export function InventoryDialog(props) {
 					Cancel
 				</Button>
 				<Button type="submit" form="inventory-form" variant="contained" autoFocus>
-					Add
+					{props.inventory == null ? "Add" : "Edit"}
 				</Button>
 			</DialogActions>
 		</Dialog>

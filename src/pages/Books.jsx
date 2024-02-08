@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -10,6 +10,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export function Books() {
 	const { books, setBooks } = useContext(BookContext);
+	const [selectedBooks, setSelectedBooks] = useState([])
 
 	useEffect(() => {
 		if (books.length !== 0) return;
@@ -27,7 +28,7 @@ export function Books() {
 				<TextField type="search" placeholder="Search" />
 			</Stack>
 
-			<BookTable books={books} />
+			<BookTable records={books} selectedRecords={selectedBooks} setSelectedRecords={setSelectedBooks} />
 		</Fragment>
 	);
 }

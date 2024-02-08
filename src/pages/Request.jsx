@@ -5,30 +5,36 @@ import Button from "@mui/material/Button";
 
 import { RequestDialog } from "../components/RequestDialog";
 import { RequestTable } from "../components/RequestTable";
-import { BookContext } from "../contexts/BookContext";
-import { getBooks } from "../helpers/firestore/books";
 import { RequestContext } from "../contexts/RequestContext";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { getBookRequests, updateBookRequest } from "../helpers/firestore/requests";
+import { auth } from "../firebase";
 
 export function Request() {
-	const { books, setBooks } = useContext(BookContext);
 	const { requests, setRequests } = useContext(RequestContext)
 
 	const [open, setOpen] = useState(false);
+	const [selectedRequests, setSelectedRequests] = useState([])
 
 	useEffect(() => {
-		if (books.length === 0) {
-			getBooks()
-				.then((x) => setBooks(x))
-				.catch(console.error);
-		}
-
 		if (requests.length === 0) {
-			// fetch requests
+			getBookRequests(auth.currentUser.uid).then(x => setRequests(x)).catch(console.error);
 		}
 	}, []);
 
 	useDocumentTitle("Requests");
+
+	async function handleCancel() {
+		for (const requestId of selectedRequests) {
+			const request = requests.find(x => x.id === requestId);
+			if (request.status !== "pending") continue;
+			await updateBookRequest(requestId, { status: "canceled" })
+			request.status = "canceled"
+		}
+
+		setRequests([...requests]);
+		setSelectedRequests([]);
+	}
 
 	return (
 		<Fragment>
@@ -36,10 +42,10 @@ export function Request() {
 				<Button variant="contained" onClick={() => setOpen(true)}>
 					New request
 				</Button>
-				<Button color="error">Cancel</Button>
+				<Button color="error" onClick={handleCancel} disabled={selectedRequests.length === 0}>Cancel</Button>
 			</Stack>
 
-			<RequestTable requests={requests} />
+			<RequestTable records={requests} selectedRecords={selectedRequests} setSelectedRecords={setSelectedRequests} />
 			<RequestDialog open={open} onClose={() => setOpen(false)} />
 		</Fragment>
 	);
