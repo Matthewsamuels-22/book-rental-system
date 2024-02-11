@@ -42,7 +42,7 @@ export async function getBorrowEntries() {
 			...data,
 			id: documentSnapshot.id,
 			dateBorrowed: data.dateBorrowed.toDate(),
-			dateReturned: data.dateReturned?.toDate()
+			dateReturned: data.dateReturned?.toDate(),
 		});
 	});
 

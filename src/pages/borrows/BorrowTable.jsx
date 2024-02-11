@@ -9,11 +9,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { dateToIsoDateString } from "../../utilities/dateformat";
 import { BookContext } from "../../contexts/BookContext";
 import { StudentContext } from "../../contexts/StudentContext";
 import { getBooks } from "../../helpers/firestore/books";
 import { getStudents } from "../../helpers/firestore/students";
+import { dateToIsoDateString } from "../../utilities/dateformat";
 
 export function BorrowTable(props) {
 	const { books, setBooks } = useContext(BookContext);
@@ -27,7 +27,9 @@ export function BorrowTable(props) {
 		}
 
 		if (students.length === 0) {
-			getStudents().then(x => setStudents(x)).catch(console.error);
+			getStudents()
+				.then((x) => setStudents(x))
+				.catch(console.error);
 		}
 	}, []);
 
@@ -48,7 +50,7 @@ export function BorrowTable(props) {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell></TableCell>
+						<TableCell />
 						<TableCell>Borrower</TableCell>
 						<TableCell>Book</TableCell>
 						<TableCell>Date Borrowed</TableCell>
@@ -67,8 +69,10 @@ export function BorrowTable(props) {
 									inputProps={{ "data-id": entry.id }}
 								/>
 							</TableCell>
-							<TableCell>{students.find(x => x.id === entry.borrower).name}</TableCell>
-							<TableCell>{books.find(x => x.id === entry.book).title}</TableCell>
+							<TableCell>
+								{students.find((x) => x.id === entry.borrower).name}
+							</TableCell>
+							<TableCell>{books.find((x) => x.id === entry.book).title}</TableCell>
 							<TableCell>{dateToIsoDateString(entry.dateBorrowed)}</TableCell>
 							<TableCell>{dateToIsoDateString(entry.dateReturned)}</TableCell>
 							<TableCell>{entry.conditionBorrowed}</TableCell>
@@ -93,6 +97,6 @@ BorrowTable.propTypes = {
 			dateReturned: PropTypes.instanceOf(Date),
 			conditionBorrowed: PropTypes.string.isRequired,
 			conditionReturned: PropTypes.string,
-		}).isRequired
-	).isRequired
-}
+		}).isRequired,
+	).isRequired,
+};

@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "format": "biome format --write src/ biome.json vite.config.js",
+    "format": "biome check --apply --linter-enabled=false src/ biome.json vite.config.js",
     "lint": "biome lint src/ biome.json vite.config.js"
   },
   "dependencies": {

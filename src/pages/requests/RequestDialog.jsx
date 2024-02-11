@@ -11,7 +11,7 @@ import { RequestForm } from "./RequestForm";
 export function RequestDialog(props) {
 	return (
 		<Dialog open={props.open} onClose={props.onClose}>
-			<DialogTitle fontWeight='bold'>Request</DialogTitle>
+			<DialogTitle fontWeight="bold">Request</DialogTitle>
 			<DialogContent>
 				<RequestForm id="request-form" postSubmit={props.onClose} />
 			</DialogContent>

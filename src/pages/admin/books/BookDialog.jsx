@@ -11,7 +11,7 @@ import { BookForm } from "./BookForm";
 export function BookDialog(props) {
 	return (
 		<Dialog open={props.open} onClose={props.onClose}>
-			<DialogTitle fontWeight='bold'>Book</DialogTitle>
+			<DialogTitle fontWeight="bold">Book</DialogTitle>
 			<DialogContent>
 				<BookForm id="book-form" book={props.book} postSubmit={props.onClose} />
 			</DialogContent>

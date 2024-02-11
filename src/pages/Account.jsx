@@ -18,9 +18,9 @@ const AuthErrorCodes = { REQUIRES_RECENT_LOGIN: "auth/requires-recent-login" };
 function getInitials(text) {
 	return text.includes(" ")
 		? text
-			.split(" ")
-			.map((x) => x[0])
-			.join("")
+				.split(" ")
+				.map((x) => x[0])
+				.join("")
 		: text.substring(0, 6);
 }
 

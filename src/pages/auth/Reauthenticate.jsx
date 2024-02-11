@@ -17,7 +17,7 @@ export function Reauthenticate() {
 	const navigate = useNavigate();
 	const passwordInputRef = useRef(null);
 
-	useDocumentTitle("Reauthenticate")
+	useDocumentTitle("Reauthenticate");
 
 	async function handleReauthentication(event) {
 		event.preventDefault();

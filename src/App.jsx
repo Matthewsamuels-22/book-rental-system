@@ -1,35 +1,35 @@
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useMemo, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline"
 
 import { BookContext } from "./contexts/BookContext";
 import { BorrowContext } from "./contexts/BorrowContext";
+import { ColorModeContext } from "./contexts/ColorModeContext";
+import { InventoryContext } from "./contexts/InventoryContext";
 import { RequestContext } from "./contexts/RequestContext";
 import { StudentContext } from "./contexts/StudentContext";
-import { InventoryContext } from "./contexts/InventoryContext";
-import { ColorModeContext } from "./contexts/ColorModeContext";
 import { useColorMode } from "./hooks/useColorMode";
 
 import { Account } from "./pages/Account";
-import { Books } from "./pages/books/Books";
-import { Borrows } from "./pages/borrows/Borrows";
 import { Home } from "./pages/Home";
 import { Layout } from "./pages/Layout";
+import { NotFound } from "./pages/NotFound";
 import { ProtectedRoutes } from "./pages/ProtectedRoutes";
 import { Reauthenticate } from "./pages/auth/Reauthenticate";
 import { ResetPassword } from "./pages/auth/ResetPassword";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
+import { Books } from "./pages/books/Books";
+import { Borrows } from "./pages/borrows/Borrows";
+import { Inventory } from "./pages/inventory/Inventory";
 import { Requests } from "./pages/requests/Requests";
 import { Students } from "./pages/students/Students";
-import { Inventory } from "./pages/inventory/Inventory";
 
-import { Books as AdminBooks } from "./pages/admin/books/Books";
 import { Layout as AdminLayout } from "./pages/admin/Layout";
+import { Books as AdminBooks } from "./pages/admin/books/Books";
 import { Requests as AdminRequests } from "./pages/admin/requests/Requests";
 
-import { NotFound } from "./pages/NotFound";
 import "./App.css";
 
 function AppRouter() {
@@ -66,11 +66,14 @@ function App() {
 	const [books, setBooks] = useState([]);
 	const [borrows, setBorrows] = useState([]);
 	const [requests, setRequests] = useState([]);
-	const [students, setStudents] = useState([])
-	const [inventory, setInventory] = useState([])
+	const [students, setStudents] = useState([]);
+	const [inventory, setInventory] = useState([]);
 
-	const colorMode = useColorMode()
-	const theme = useMemo(() => createTheme({ palette: { mode: colorMode.mode } }), [colorMode.mode])
+	const colorMode = useColorMode();
+	const theme = useMemo(
+		() => createTheme({ palette: { mode: colorMode.mode } }),
+		[colorMode.mode],
+	);
 
 	return (
 		<BookContext.Provider value={{ books, setBooks }}>

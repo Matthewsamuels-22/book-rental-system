@@ -23,16 +23,16 @@ export function InventoryTable(props) {
 		}
 	}, []);
 
-	function handleEntrySelect(event) {
+	function handleRecordSelect(event) {
 		const checkbox = event.target;
-		const entryId = checkbox.dataset.id;
+		const recordId = checkbox.dataset.id;
 
 		if (checkbox.checked) {
-			props.setInventorySelection([...props.inventorySelection, entryId]);
+			props.setSelectedRecords([...props.selectedRecords, recordId]);
 			return;
 		}
 
-		props.setInventorySelection(props.inventorySelection.filter((x) => x !== entryId));
+		props.setSelectedRecords(props.selectedRecords.filter((x) => x !== recordId));
 	}
 
 	return (
@@ -40,22 +40,22 @@ export function InventoryTable(props) {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell></TableCell>
+						<TableCell />
 						<TableCell>Book</TableCell>
 						<TableCell>Quantity</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.inventory.map((entry, index) => (
+					{props.records.map((entry, index) => (
 						<TableRow key={index}>
 							<TableCell>
 								<Checkbox
-									onChange={handleEntrySelect}
-									disabled={props.inventorySelection.length > 10}
+									onChange={handleRecordSelect}
+									disabled={props.selectedRecords.length > 10}
 									inputProps={{ "data-id": entry.id }}
 								/>
 							</TableCell>
-							<TableCell>{books.find(x => x.id === entry.book).title}</TableCell>
+							<TableCell>{books.find((x) => x.id === entry.book).title}</TableCell>
 							<TableCell>{entry.quantity}</TableCell>
 						</TableRow>
 					))}
@@ -66,13 +66,13 @@ export function InventoryTable(props) {
 }
 
 InventoryTable.propTypes = {
-	inventorySelection: PropTypes.arrayOf(PropTypes.string).isRequired,
-	setInventorySelection: PropTypes.func.isRequired,
-	inventory: PropTypes.arrayOf(
+	selectedRecords: PropTypes.arrayOf(PropTypes.string).isRequired,
+	setSelectedRecords: PropTypes.func.isRequired,
+	records: PropTypes.arrayOf(
 		PropTypes.exact({
 			id: PropTypes.string.isRequired,
 			book: PropTypes.string.isRequired,
 			quantity: PropTypes.number.isRequired,
-		}).isRequired
-	).isRequired
+		}).isRequired,
+	).isRequired,
 };

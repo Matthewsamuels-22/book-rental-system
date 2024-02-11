@@ -36,12 +36,12 @@ export async function getStudents() {
 	const querySnapshot = await getDocs(collectionRef);
 
 	querySnapshot.forEach((documentSnapshot) => {
-		const data = documentSnapshot.data()
+		const data = documentSnapshot.data();
 
 		students.push({
 			...data,
 			id: documentSnapshot.id,
-			gradeLevels: data.gradeLevels.map(x => ({ ...x, logDate: x.logDate.toDate() }))
+			gradeLevels: data.gradeLevels.map((x) => ({ ...x, logDate: x.logDate.toDate() })),
 		});
 	});
 

@@ -21,14 +21,14 @@ import Stack from "@mui/material/Stack";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 
-import { auth } from "../firebase";
 import { ColorModeSwitch } from "../components/ColorModeSwitch";
+import { auth } from "../firebase";
 
 export function Layout() {
 	const { currentUserIsAdmin } = useOutletContext();
 
 	if (currentUserIsAdmin) {
-		return <Navigate to="/notfound" />
+		return <Navigate to="/notfound" />;
 	}
 
 	const [tabIndex, setTabIndex] = useState(0);
@@ -44,7 +44,11 @@ export function Layout() {
 					Sign Out
 				</Button>
 				<Divider variant="middle" />
-				<Tabs orientation="vertical" value={tabIndex} onChange={handleTabChange} role="navigation">
+				<Tabs
+					orientation="vertical"
+					value={tabIndex}
+					onChange={handleTabChange}
+					role="navigation">
 					<Tab
 						component={Link}
 						to="/"

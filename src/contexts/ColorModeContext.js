@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export const ColorModeContext = createContext(null)
+export const ColorModeContext = createContext(null);

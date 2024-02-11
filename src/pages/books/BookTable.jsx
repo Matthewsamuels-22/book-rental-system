@@ -26,7 +26,7 @@ export function BookTable(props) {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell></TableCell>
+						<TableCell />
 						<TableCell>Title</TableCell>
 						<TableCell>Authors</TableCell>
 						<TableCell>Edition</TableCell>
@@ -70,6 +70,6 @@ BookTable.propTypes = {
 			volume: PropTypes.number.isRequired,
 			publisher: PropTypes.string.isRequired,
 			yearPublished: PropTypes.number.isRequired,
-		}).isRequired
-	).isRequired
-}
+		}).isRequired,
+	).isRequired,
+};

@@ -4,17 +4,17 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
-import { InventoryTable } from "./InventoryTable";
-import { InventoryDialog } from "./InventoryDialog";
 import { InventoryContext } from "../../contexts/InventoryContext";
 import { deleteInventoryItem, getInventory } from "../../helpers/firestore/inventory";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import { InventoryDialog } from "./InventoryDialog";
+import { InventoryTable } from "./InventoryTable";
 
 export function Inventory() {
-	const { inventory, setInventory } = useContext(InventoryContext)
+	const { inventory, setInventory } = useContext(InventoryContext);
 
 	const [open, setOpen] = useState(false);
-	const [inventorySelection, setInventorySelection] = useState([]);
+	const [selectedInventoryItems, setSelectedInventoryItems] = useState([]);
 	const [entrySelected, setEntrySelected] = useState(null);
 
 	useEffect(() => {
@@ -33,30 +33,46 @@ export function Inventory() {
 	}
 
 	function handleEdit() {
-		const entryId = inventorySelection[0];
+		const entryId = selectedInventoryItems[0];
 		const entry = inventory.find((x) => x.id === entryId);
 		setEntrySelected(entry);
 		setOpen(true);
 	}
 
 	async function handleDelete() {
-		for (const id of inventorySelection) await deleteInventoryItem(id);
+		for (const id of selectedInventoryItems) await deleteInventoryItem(id);
 
-		setInventory(inventory.filter((x) => !inventorySelection.includes(x.id)));
-		setInventorySelection([]);
+		setInventory(inventory.filter((x) => !selectedInventoryItems.includes(x.id)));
+		setSelectedInventoryItems([]);
 	}
 
 	return (
 		<Fragment>
-			<Stack direction='row'>
-				<Button variant="contained" onClick={handleAdd}>Add</Button>
-				<Button color="secondary" onClick={handleEdit} disabled={inventorySelection.length !== 1}>Edit</Button>
-				<Button color="error" onClick={handleDelete} disabled={inventorySelection.length === 0}>Delete</Button>
+			<Stack direction="row">
+				<Button variant="contained" onClick={handleAdd}>
+					Add
+				</Button>
+				<Button
+					color="secondary"
+					onClick={handleEdit}
+					disabled={selectedInventoryItems.length !== 1}>
+					Edit
+				</Button>
+				<Button
+					color="error"
+					onClick={handleDelete}
+					disabled={selectedInventoryItems.length === 0}>
+					Delete
+				</Button>
 				<TextField type="search" placeholder="Search" />
 			</Stack>
 
-			<InventoryTable inventory={inventory} inventorySelection={inventorySelection} setInventorySelection={setInventorySelection} />
+			<InventoryTable
+				records={inventory}
+				selectedRecords={selectedInventoryItems}
+				setSelectedRecords={setSelectedInventoryItems}
+			/>
 			<InventoryDialog open={open} onClose={() => setOpen(false)} inventory={entrySelected} />
 		</Fragment>
-	)
+	);
 }
