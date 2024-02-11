@@ -12,8 +12,8 @@ import { ColorModeContext } from "./contexts/ColorModeContext";
 import { useColorMode } from "./hooks/useColorMode";
 
 import { Account } from "./pages/Account";
-import { Books } from "./pages/Books";
-import { Borrows } from "./pages/Borrows";
+import { Books } from "./pages/books/Books";
+import { Borrows } from "./pages/borrows/Borrows";
 import { Home } from "./pages/Home";
 import { Layout } from "./pages/Layout";
 import { ProtectedRoutes } from "./pages/ProtectedRoutes";
@@ -21,7 +21,7 @@ import { Reauthenticate } from "./pages/auth/Reauthenticate";
 import { ResetPassword } from "./pages/auth/ResetPassword";
 import { Signin } from "./pages/auth/Signin";
 import { Signup } from "./pages/auth/Signup";
-import { Request } from "./pages/Request";
+import { Requests } from "./pages/requests/Requests";
 import { Students } from "./pages/students/Students";
 import { Inventory } from "./pages/inventory/Inventory";
 
@@ -46,7 +46,7 @@ function AppRouter() {
 						<Route path="/books" element={<Books />} />
 						<Route path="/borrows" element={<Borrows />} />
 						<Route path="/account" element={<Account />} />
-						<Route path="/requests" element={<Request />} />
+						<Route path="/requests" element={<Requests />} />
 						<Route path="/students" element={<Students />} />
 						<Route path="/inventory" element={<Inventory />} />
 					</Route>

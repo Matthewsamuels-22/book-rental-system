@@ -5,12 +5,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
-import { BorrowContext } from "../contexts/BorrowContext";
-import { dateToIsoDateString } from "../utilities/dateformat";
-import { dateFromIsoDateString } from "../utilities/dateparser";
-import { BookAutocomplete } from "./BookAutocomplete";
-import { addBorrowEntry, updateBorrowEntry } from "../helpers/firestore/borrows";
-import { StudentAutocomplete } from "./StudentAutocomplete";
+import { BorrowContext } from "../../contexts/BorrowContext";
+import { dateToIsoDateString } from "../../utilities/dateformat";
+import { dateFromIsoDateString } from "../../utilities/dateparser";
+import { BookAutocomplete } from "../../components/BookAutocomplete";
+import { addBorrowEntry, updateBorrowEntry } from "../../helpers/firestore/borrows";
+import { StudentAutocomplete } from "../../components/StudentAutocomplete";
 
 export function BorrowForm(props) {
 	const { borrows, setBorrows } = useContext(BorrowContext);

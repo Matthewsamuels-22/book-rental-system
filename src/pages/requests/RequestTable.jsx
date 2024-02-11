@@ -9,9 +9,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { dateToIsoDateString } from "../utilities/dateformat";
-import { BookContext } from "../contexts/BookContext";
-import { getBooks } from "../helpers/firestore/books";
+import { dateToIsoDateString } from "../../utilities/dateformat";
+import { BookContext } from "../../contexts/BookContext";
+import { getBooks } from "../../helpers/firestore/books";
 
 export function RequestTable(props) {
 	const { books, setBooks } = useContext(BookContext);

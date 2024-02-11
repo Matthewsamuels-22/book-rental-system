@@ -3,10 +3,10 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
-import { BookTable } from "../components/BookTable";
-import { getBooks } from "../helpers/firestore/books";
-import { BookContext } from "../contexts/BookContext";
-import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { BookTable } from "./BookTable";
+import { getBooks } from "../../helpers/firestore/books";
+import { BookContext } from "../../contexts/BookContext";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 export function Books() {
 	const { books, setBooks } = useContext(BookContext);

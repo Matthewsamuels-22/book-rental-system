@@ -4,11 +4,11 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
-import { BorrowDialog } from "../components/BorrowDialog";
-import { BorrowTable } from "../components/BorrowTable";
-import { BorrowContext } from "../contexts/BorrowContext";
-import { useDocumentTitle } from "../hooks/useDocumentTitle";
-import { deleteBorrowEntry, getBorrowEntries } from "../helpers/firestore/borrows";
+import { BorrowDialog } from "./BorrowDialog";
+import { BorrowTable } from "./BorrowTable";
+import { BorrowContext } from "../../contexts/BorrowContext";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import { deleteBorrowEntry, getBorrowEntries } from "../../helpers/firestore/borrows";
 
 export function Borrows() {
 	const { borrows, setBorrows } = useContext(BorrowContext);

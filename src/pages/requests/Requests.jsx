@@ -3,14 +3,14 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
-import { RequestDialog } from "../components/RequestDialog";
-import { RequestTable } from "../components/RequestTable";
-import { RequestContext } from "../contexts/RequestContext";
-import { useDocumentTitle } from "../hooks/useDocumentTitle";
-import { getBookRequests, updateBookRequest } from "../helpers/firestore/requests";
-import { auth } from "../firebase";
+import { RequestDialog } from "./RequestDialog";
+import { RequestTable } from "./RequestTable";
+import { RequestContext } from "../../contexts/RequestContext";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import { getBookRequests, updateBookRequest } from "../../helpers/firestore/requests";
+import { auth } from "../../firebase";
 
-export function Request() {
+export function Requests() {
 	const { requests, setRequests } = useContext(RequestContext)
 
 	const [open, setOpen] = useState(false);

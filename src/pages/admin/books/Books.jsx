@@ -6,7 +6,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
 import { BookContext } from "../../../contexts/BookContext";
-import { BookDialog } from "../../../components/BookDialog";
+import { BookDialog } from "./BookDialog";
 import { deleteBook, getBooks } from "../../../helpers/firestore/books";
 import { BookTable } from "./BookTable";
 import { useDocumentTitle } from "../../../hooks/useDocumentTitle";

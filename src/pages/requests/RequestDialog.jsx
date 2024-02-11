@@ -6,7 +6,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import { BorrowDialog } from "./BorrowDialog";
 import { RequestForm } from "./RequestForm";
 
 export function RequestDialog(props) {
@@ -28,7 +27,7 @@ export function RequestDialog(props) {
 	);
 }
 
-BorrowDialog.propTypes = {
+RequestDialog.propTypes = {
 	open: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
 };

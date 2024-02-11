@@ -4,10 +4,10 @@ import { useContext, useRef } from "react";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
-import { RequestContext } from "../contexts/RequestContext";
-import { auth } from "../firebase";
-import { BookAutocomplete } from "./BookAutocomplete";
-import { addBookRequest } from "../helpers/firestore/requests";
+import { RequestContext } from "../../contexts/RequestContext";
+import { auth } from "../../firebase";
+import { BookAutocomplete } from "../../components/BookAutocomplete";
+import { addBookRequest } from "../../helpers/firestore/requests";
 
 export function RequestForm(props) {
 	const { requests, setRequests } = useContext(RequestContext);

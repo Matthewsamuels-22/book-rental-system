@@ -9,11 +9,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { dateToIsoDateString } from "../utilities/dateformat";
-import { BookContext } from "../contexts/BookContext";
-import { StudentContext } from "../contexts/StudentContext";
-import { getBooks } from "../helpers/firestore/books";
-import { getStudents } from "../helpers/firestore/students";
+import { dateToIsoDateString } from "../../utilities/dateformat";
+import { BookContext } from "../../contexts/BookContext";
+import { StudentContext } from "../../contexts/StudentContext";
+import { getBooks } from "../../helpers/firestore/books";
+import { getStudents } from "../../helpers/firestore/students";
 
 export function BorrowTable(props) {
 	const { books, setBooks } = useContext(BookContext);
