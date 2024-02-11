@@ -10,16 +10,19 @@ import { dateToIsoDateString } from "../utilities/dateformat";
 import { dateFromIsoDateString } from "../utilities/dateparser";
 import { BookAutocomplete } from "./BookAutocomplete";
 import { addBorrowEntry, updateBorrowEntry } from "../helpers/firestore/borrows";
+import { StudentAutocomplete } from "./StudentAutocomplete";
 
 export function BorrowForm(props) {
 	const { borrows, setBorrows } = useContext(BorrowContext);
+
+	const studentInputRef = useRef(null)
 	const bookInputRef = useRef(null)
 
 	async function handleSubmit(event) {
 		event.preventDefault();
 		const formData = new FormData(event.target);
 
-		const borrower = formData.get("borrower");
+		const borrower = studentInputRef.current.dataset.id;
 		const book = bookInputRef.current.dataset.id;
 		const dateBorrowed = dateFromIsoDateString(formData.get("date-borrowed"));
 		const dateReturned = dateFromIsoDateString(formData.get("date-returned"));
@@ -50,25 +53,25 @@ export function BorrowForm(props) {
 
 	return (
 		<Stack component="form" id={props.id} onSubmit={handleSubmit} spacing={2}>
-			<TextField label="Borrower" name="borrower" required />
-			<BookAutocomplete ref={bookInputRef} required />
+			<StudentAutocomplete ref={studentInputRef} label="Borrower" defaultValue={props.borrowEntry?.borrower} required />
+			<BookAutocomplete ref={bookInputRef} defaultValue={props.borrowEntry?.book} required />
 			<Stack direction="row" spacing={2}>
 				<TextField
 					type="date"
 					label="Date borrowed"
 					name="date-borrowed"
-					defaultValue={dateToIsoDateString(new Date())}
+					defaultValue={dateToIsoDateString(props.borrowEntry?.dateBorrowed ?? new Date())}
 					fullWidth
 					required
 				/>
-				<TextField type="date" label="Date returned" name="date-returned" fullWidth />
+				<TextField type="date" label="Date returned" name="date-returned" defaultValue={props.borrowEntry?.dateReturned} fullWidth />
 			</Stack>
 			<Stack direction="row" spacing={2}>
 				<TextField
 					select
 					label="Condition borrowed"
 					name="condition-borrowed"
-					defaultValue=""
+					defaultValue={props.borrowEntry?.conditionBorrowed}
 					required
 					sx={{ width: "20ch" }}>
 					<MenuItem />
@@ -81,7 +84,7 @@ export function BorrowForm(props) {
 					select
 					label="Condition returned"
 					name="condition-returned"
-					defaultValue=""
+					defaultValue={props.borrowEntry?.conditionReturned}
 					sx={{ width: "20ch" }}>
 					<MenuItem />
 					<MenuItem value="A">Excellent</MenuItem>

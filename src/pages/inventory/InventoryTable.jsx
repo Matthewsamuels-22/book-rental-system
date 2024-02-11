@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useContext, useEffect } from "react";
 
 import Checkbox from "@mui/material/Checkbox";
 import Table from "@mui/material/Table";
@@ -8,7 +9,20 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
+import { BookContext } from "../../contexts/BookContext";
+import { getBooks } from "../../helpers/firestore/books";
+
 export function InventoryTable(props) {
+	const { books, setBooks } = useContext(BookContext);
+
+	useEffect(() => {
+		if (books.length === 0) {
+			getBooks()
+				.then((x) => setBooks(x))
+				.catch(console.error);
+		}
+	}, []);
+
 	function handleEntrySelect(event) {
 		const checkbox = event.target;
 		const entryId = checkbox.dataset.id;
@@ -41,7 +55,7 @@ export function InventoryTable(props) {
 									inputProps={{ "data-id": entry.id }}
 								/>
 							</TableCell>
-							<TableCell>{entry.book}</TableCell>
+							<TableCell>{books.find(x => x.id === entry.book).title}</TableCell>
 							<TableCell>{entry.quantity}</TableCell>
 						</TableRow>
 					))}

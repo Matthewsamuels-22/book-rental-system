@@ -6,44 +6,59 @@ import TextField from "@mui/material/TextField";
 
 import { BorrowDialog } from "../components/BorrowDialog";
 import { BorrowTable } from "../components/BorrowTable";
-import { BookContext } from "../contexts/BookContext";
-import { getBooks } from "../helpers/firestore/books";
 import { BorrowContext } from "../contexts/BorrowContext";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { deleteBorrowEntry, getBorrowEntries } from "../helpers/firestore/borrows";
 
 export function Borrows() {
-	const { books, setBooks } = useContext(BookContext);
-	const { borrows } = useContext(BorrowContext);
+	const { borrows, setBorrows } = useContext(BorrowContext);
 
 	const [open, setOpen] = useState(false);
+	const [selectedBorrowEntries, setSelectedBorrowEntries] = useState([])
+	const [selectedBorrowEntry, setSelectedBorrowEntry] = useState(null)
 
 	useEffect(() => {
-		if (books.length === 0) {
-			getBooks()
-				.then((x) => setBooks(x))
-				.catch(console.error);
-		}
-
 		if (borrows.length === 0) {
-			// fetch borrows
+			getBorrowEntries()
+				.then(x => setBorrows(x))
+				.catch(console.error);
 		}
 	}, []);
 
 	useDocumentTitle("Borrows");
 
+	function handleAdd() {
+		setSelectedBorrowEntry(null)
+		setOpen(true)
+	}
+
+	function handleEdit() {
+		const entryId = selectedBorrowEntries[0]
+		const entry = borrows.find(x => x.id === entryId);
+		setSelectedBorrowEntry(entry)
+		setOpen(true)
+	}
+
+	async function handleDelete() {
+		for (const id of selectedBorrowEntries) await deleteBorrowEntry(id);
+
+		setBorrows(borrows.filter(x => !selectedBorrowEntries.includes(x.id)))
+		setSelectedBorrowEntries([])
+	}
+
 	return (
 		<Fragment>
 			<Stack direction='row'>
-				<Button variant="contained" onClick={() => setOpen(true)}>
+				<Button variant="contained" onClick={handleAdd}>
 					Add
 				</Button>
-				<Button color="secondary">Edit</Button>
-				<Button color="error">Delete</Button>
+				<Button color="secondary" onClick={handleEdit} disabled={selectedBorrowEntries.length !== 1}>Edit</Button>
+				<Button color="error" onClick={handleDelete} disabled={selectedBorrowEntries.length === 0}>Delete</Button>
 				<TextField type="search" placeholder="Search" />
 			</Stack>
 
-			<BorrowTable borrows={borrows} />
-			<BorrowDialog open={open} onClose={() => setOpen(false)} />
+			<BorrowTable records={borrows} selectedRecords={selectedBorrowEntries} setSelectedRecords={setSelectedBorrowEntries} />
+			<BorrowDialog open={open} onClose={() => setOpen(false)} borrowEntry={selectedBorrowEntry} />
 		</Fragment>
 	);
 }

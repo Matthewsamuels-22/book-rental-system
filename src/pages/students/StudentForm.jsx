@@ -22,7 +22,7 @@ function createGradeLevel() {
 
 export function StudentForm(props) {
 	const { students, setStudents } = useContext(StudentContext);
-	const [gradeLevels, setGradeLevels] = useState([createGradeLevel()])
+	const [gradeLevels, setGradeLevels] = useState(props.student?.gradeLevels.map(x => ({ uuid: window.crypto.randomUUID(), ...x })) ?? [createGradeLevel()])
 
 	function addGradeLevel() {
 		setGradeLevels([...gradeLevels, createGradeLevel()])
@@ -61,15 +61,15 @@ export function StudentForm(props) {
 
 	return (
 		<Stack component='form' id={props.id} onSubmit={handleSubmit} spacing={2}>
-			<TextField label="Name" name="name" required />
-			<TextField label="ID" name="id" required />
+			<TextField label="Name" name="name" defaultValue={props.student?.name} required />
+			<TextField label="ID" name="id" defaultValue={props.student?.schoolId} required />
 			<Stack component='fieldset' border='none' padding={0} spacing={2}>
 				<Typography component='legend'>Grade Levels</Typography>
 				{gradeLevels.map((level, index) => (
 					<Stack key={level.uuid} spacing={2}>
 						<Stack direction='row' spacing={2}>
-							<TextField type="number" label="Grade" name={"grade-" + index} required inputProps={{ min: 0 }} />
-							<TextField label="Class" name={"class-" + index} required />
+							<TextField type="number" label="Grade" name={"grade-" + index} defaultValue={level.grade} required inputProps={{ min: 0 }} />
+							<TextField label="Class" name={"class-" + index} defaultValue={level.class} required />
 						</Stack>
 						<Stack direction='row' spacing={2}>
 							<TextField type="date" label="Log date" name={"log-date-" + index} defaultValue={dateToIsoDateString(level.logDate)} fullWidth required />
