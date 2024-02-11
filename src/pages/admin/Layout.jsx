@@ -1,6 +1,6 @@
 import { signOut } from "firebase/auth";
 import { useState } from "react";
-import { Link, Outlet, useOutletContext } from "react-router-dom";
+import { Link, Navigate, Outlet, useOutletContext } from "react-router-dom";
 
 import { FaFile, FaQuestion, FaSignOutAlt, FaUser } from "react-icons/fa";
 
@@ -18,7 +18,9 @@ import { ColorModeSwitch } from "../../components/ColorModeSwitch";
 export function Layout() {
 	const { currentUserIsAdmin } = useOutletContext();
 
-	if (!currentUserIsAdmin) return <h1>404: Not found</h1>;
+	if (!currentUserIsAdmin) {
+		return <Navigate to="/notfound" />
+	}
 
 	const [tabIndex, setTabIndex] = useState(0);
 

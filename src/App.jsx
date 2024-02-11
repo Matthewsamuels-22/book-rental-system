@@ -29,6 +29,7 @@ import { Books as AdminBooks } from "./pages/admin/books/Books";
 import { Layout as AdminLayout } from "./pages/admin/Layout";
 import { Requests as AdminRequests } from "./pages/admin/requests/Requests";
 
+import { NotFound } from "./pages/NotFound";
 import "./App.css";
 
 function AppRouter() {
@@ -55,6 +56,7 @@ function AppRouter() {
 						<Route path="/admin/requests" element={<AdminRequests />} />
 					</Route>
 				</Route>
+				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</BrowserRouter>
 	);
