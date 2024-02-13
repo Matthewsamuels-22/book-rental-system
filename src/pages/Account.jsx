@@ -81,7 +81,7 @@ export function Account() {
 
 	return (
 		<Fragment>
-			<Stack direction="row" marginTop={2} spacing={2}>
+			<Stack direction="row" flexWrap="wrap" marginTop={2} spacing={2} useFlexGap>
 				<Avatar sx={{ width: 100, height: 100, textTransform: "uppercase" }}>
 					{getInitials(currentUser.displayName ?? currentUser.email)}
 				</Avatar>
@@ -91,13 +91,16 @@ export function Account() {
 						defaultValue={currentUser.displayName}
 						inputRef={displayNameInputRef}
 					/>
-					<Button variant="contained" onClick={changeProfile}>
+					<Button
+						variant="contained"
+						onClick={changeProfile}
+						sx={{ fontWeight: "bold", textTransform: "none" }}>
 						Update
 					</Button>
 				</Stack>
 			</Stack>
 
-			<Stack spacing={2}>
+			<Stack marginTop={4} spacing={2}>
 				<TextField
 					type="email"
 					label="Email"
@@ -106,12 +109,15 @@ export function Account() {
 					inputRef={emailInputRef}
 					required
 				/>
-				<Button variant="contained" onClick={changeEmailAddress}>
+				<Button
+					variant="contained"
+					onClick={changeEmailAddress}
+					sx={{ fontWeight: "bold", textTransform: "none" }}>
 					Update
 				</Button>
 			</Stack>
 
-			<Stack spacing={2}>
+			<Stack marginTop={4} spacing={2}>
 				<TextField
 					type="password"
 					label="New password"
@@ -120,7 +126,10 @@ export function Account() {
 					inputProps={{ minLength: 6 }}
 					required
 				/>
-				<Button variant="contained" onClick={changePassword}>
+				<Button
+					variant="contained"
+					onClick={changePassword}
+					sx={{ fontWeight: "bold", textTransform: "none" }}>
 					Update
 				</Button>
 			</Stack>

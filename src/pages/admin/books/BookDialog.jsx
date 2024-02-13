@@ -16,10 +16,20 @@ export function BookDialog(props) {
 				<BookForm id="book-form" book={props.book} postSubmit={props.onClose} />
 			</DialogContent>
 			<DialogActions>
-				<Button type="reset" form="book-form" color="secondary" onClick={props.onClose}>
+				<Button
+					type="reset"
+					form="book-form"
+					color="secondary"
+					onClick={props.onClose}
+					sx={{ fontWeight: "bold" }}>
 					Cancel
 				</Button>
-				<Button type="submit" form="book-form" autoFocus>
+				<Button
+					type="submit"
+					form="book-form"
+					variant="contained"
+					sx={{ fontWeight: "bold" }}
+					autoFocus>
 					{props.book == null ? "Add" : "Edit"}
 				</Button>
 			</DialogActions>

@@ -1,5 +1,7 @@
 import { Fragment, useContext, useEffect, useState } from "react";
+import { FaSearch } from "react-icons/fa";
 
+import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
@@ -25,7 +27,18 @@ export function Books() {
 	return (
 		<Fragment>
 			<Stack direction="row">
-				<TextField type="search" placeholder="Search" />
+				<TextField
+					type="search"
+					placeholder="Search"
+					size="small"
+					InputProps={{
+						startAdornment: (
+							<InputAdornment position="start">
+								<FaSearch />
+							</InputAdornment>
+						),
+					}}
+				/>
 			</Stack>
 
 			<BookTable

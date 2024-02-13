@@ -1,7 +1,8 @@
 import { Fragment, useContext, useEffect, useState } from "react";
-import { FaPen, FaPlus, FaTrash } from "react-icons/fa";
+import { FaPen, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 
 import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
@@ -49,25 +50,42 @@ export function Books() {
 
 	return (
 		<Fragment>
-			<Stack direction="row">
-				<Button onClick={handleAdd} startIcon={<FaPlus />}>
+			<Stack direction="row" spacing={2}>
+				<Button
+					variant="contained"
+					onClick={handleAdd}
+					startIcon={<FaPlus />}
+					sx={{ fontWeight: "bold", textTransform: "none" }}>
 					Add
 				</Button>
 				<Button
 					color="secondary"
 					onClick={handleEdit}
 					disabled={selectedBooks.length !== 1}
-					startIcon={<FaPen />}>
+					startIcon={<FaPen />}
+					sx={{ fontWeight: "bold", textTransform: "none" }}>
 					Edit
 				</Button>
 				<Button
 					color="error"
 					onClick={handleDelete}
 					disabled={selectedBooks.length === 0}
-					startIcon={<FaTrash />}>
+					startIcon={<FaTrash />}
+					sx={{ fontWeight: "bold", textTransform: "none" }}>
 					Delete
 				</Button>
-				<TextField type="search" placeholder="Search" />
+				<TextField
+					type="search"
+					placeholder="Search"
+					size="small"
+					InputProps={{
+						startAdornment: (
+							<InputAdornment position="start">
+								<FaSearch />
+							</InputAdornment>
+						),
+					}}
+				/>
 			</Stack>
 
 			<BookTable

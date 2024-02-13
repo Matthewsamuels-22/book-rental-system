@@ -1,6 +1,8 @@
 import { Fragment, useContext, useEffect, useState } from "react";
+import { FaPen, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 
 import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
@@ -48,23 +50,42 @@ export function Inventory() {
 
 	return (
 		<Fragment>
-			<Stack direction="row">
-				<Button variant="contained" onClick={handleAdd}>
+			<Stack direction="row" spacing={2}>
+				<Button
+					variant="contained"
+					onClick={handleAdd}
+					startIcon={<FaPlus />}
+					sx={{ fontWeight: "bold", textTransform: "none" }}>
 					Add
 				</Button>
 				<Button
 					color="secondary"
 					onClick={handleEdit}
-					disabled={selectedInventoryItems.length !== 1}>
+					disabled={selectedInventoryItems.length !== 1}
+					startIcon={<FaPen />}
+					sx={{ fontWeight: "bold", textTransform: "none" }}>
 					Edit
 				</Button>
 				<Button
 					color="error"
 					onClick={handleDelete}
-					disabled={selectedInventoryItems.length === 0}>
+					disabled={selectedInventoryItems.length === 0}
+					startIcon={<FaTrash />}
+					sx={{ fontWeight: "bold", textTransform: "none" }}>
 					Delete
 				</Button>
-				<TextField type="search" placeholder="Search" />
+				<TextField
+					type="search"
+					placeholder="Search"
+					size="small"
+					InputProps={{
+						startAdornment: (
+							<InputAdornment position="start">
+								<FaSearch />
+							</InputAdornment>
+						),
+					}}
+				/>
 			</Stack>
 
 			<InventoryTable

@@ -10,16 +10,26 @@ import { RequestForm } from "./RequestForm";
 
 export function RequestDialog(props) {
 	return (
-		<Dialog open={props.open} onClose={props.onClose}>
+		<Dialog open={props.open} onClose={props.onClose} fullWidth>
 			<DialogTitle fontWeight="bold">Request</DialogTitle>
 			<DialogContent>
 				<RequestForm id="request-form" postSubmit={props.onClose} />
 			</DialogContent>
 			<DialogActions>
-				<Button type="reset" form="request-form" color="secondary" onClick={props.onClose}>
+				<Button
+					type="reset"
+					form="request-form"
+					color="secondary"
+					onClick={props.onClose}
+					sx={{ fontWeight: "bold" }}>
 					Cancel
 				</Button>
-				<Button type="submit" form="request-form" autoFocus>
+				<Button
+					type="submit"
+					form="request-form"
+					variant="contained"
+					sx={{ fontWeight: "bold" }}
+					autoFocus>
 					Submit
 				</Button>
 			</DialogActions>

@@ -70,7 +70,7 @@ export function Signup() {
 					}}
 				/>
 
-				<Button type="submit" variant="contained">
+				<Button type="submit" variant="contained" size="large" sx={{ fontWeight: "bold" }}>
 					Create account
 				</Button>
 

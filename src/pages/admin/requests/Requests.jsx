@@ -1,6 +1,8 @@
 import { Fragment, useContext, useEffect, useState } from "react";
+import { FaCheck, FaSearch } from "react-icons/fa";
 
 import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
@@ -37,9 +39,26 @@ export function Requests() {
 
 	return (
 		<Fragment>
-			<Stack direction="row">
-				<Button onClick={markAsDone}>Mark as done</Button>
-				<TextField type="search" placeholder="Search" />
+			<Stack direction="row" spacing={2}>
+				<Button
+					variant="contained"
+					onClick={markAsDone}
+					startIcon={<FaCheck />}
+					sx={{ fontWeight: "bold", textTransform: "none" }}>
+					Mark as done
+				</Button>
+				<TextField
+					type="search"
+					placeholder="Search"
+					size="small"
+					InputProps={{
+						startAdornment: (
+							<InputAdornment position="start">
+								<FaSearch />
+							</InputAdornment>
+						),
+					}}
+				/>
 			</Stack>
 
 			<RequestTable
