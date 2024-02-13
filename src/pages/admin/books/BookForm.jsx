@@ -70,36 +70,36 @@ export function BookForm(props) {
 			<Stack component="fieldset" border="none" padding={0} spacing={2}>
 				<Typography component="legend">Authors</Typography>
 				{authors.map((author, index) => (
-					<Stack key={author.uuid} direction="row" spacing={2}>
+					<Stack key={author.uuid} direction="row" flexWrap="wrap" spacing={2} useFlexGap>
 						<TextField
 							label="Author"
 							name={"author-" + index}
 							defaultValue={author.name}
-							fullWidth
 							required
+							sx={{ flexGrow: 1 }}
 						/>
 						{authors.length > 1 && (
 							<Button
-								type="button"
-								variant="outlined"
 								color="error"
-								onClick={() => removeAuthor(index)}>
+								onClick={() => removeAuthor(index)}
+								sx={{ fontWeight: "bold", textTransform: "none" }}>
 								Remove
 							</Button>
 						)}
 					</Stack>
 				))}
-				<Button type="button" variant="contained" onClick={addAuthor}>
+				<Button onClick={addAuthor} sx={{ fontWeight: "bold", textTransform: "none" }}>
 					Add author
 				</Button>
 			</Stack>
-			<Stack direction="row" spacing={2}>
+			<Stack direction="row" flexWrap="wrap" spacing={2} useFlexGap>
 				<TextField
 					type="number"
 					label="Edition"
 					name="edition"
 					defaultValue={props.book?.edition}
 					inputProps={{ min: 0 }}
+					sx={{ flexGrow: 1 }}
 				/>
 				<TextField
 					type="number"
@@ -107,6 +107,7 @@ export function BookForm(props) {
 					name="volume"
 					defaultValue={props.book?.volume}
 					inputProps={{ min: 0 }}
+					sx={{ flexGrow: 1 }}
 				/>
 			</Stack>
 			<Stack direction="row" flexWrap="wrap" spacing={2} useFlexGap>
@@ -114,6 +115,7 @@ export function BookForm(props) {
 					label="Publisher"
 					name="publisher"
 					defaultValue={props.book?.publisher}
+					sx={{ flexGrow: 1 }}
 				/>
 				<TextField
 					type="number"
@@ -121,6 +123,7 @@ export function BookForm(props) {
 					name="year-published"
 					defaultValue={props.book?.yearPublished}
 					inputProps={{ min: 0 }}
+					sx={{ flexGrow: 1 }}
 				/>
 			</Stack>
 		</Stack>

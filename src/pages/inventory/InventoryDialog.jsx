@@ -24,11 +24,16 @@ export function InventoryDialog(props) {
 					type="reset"
 					form="inventory-form"
 					color="secondary"
-					variant="contained"
-					onClick={props.onClose}>
+					onClick={props.onClose}
+					sx={{ fontWeight: "bold" }}>
 					Cancel
 				</Button>
-				<Button type="submit" form="inventory-form" variant="contained" autoFocus>
+				<Button
+					type="submit"
+					form="inventory-form"
+					variant="contained"
+					sx={{ fontWeight: "bold" }}
+					autoFocus>
 					{props.inventory == null ? "Add" : "Edit"}
 				</Button>
 			</DialogActions>

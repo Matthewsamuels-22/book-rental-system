@@ -53,7 +53,7 @@ export function Reauthenticate() {
 					}}
 				/>
 
-				<Button type="submit" variant="contained">
+				<Button type="submit" variant="contained" size="large" sx={{ fontWeight: "bold" }}>
 					Reauthenticate
 				</Button>
 			</Stack>

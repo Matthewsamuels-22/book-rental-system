@@ -45,7 +45,7 @@ export function ResetPassword() {
 					}}
 				/>
 
-				<Button type="submit" variant="contained">
+				<Button type="submit" variant="contained" size="large" sx={{ fontWeight: "bold" }}>
 					Send password reset email
 				</Button>
 			</Stack>

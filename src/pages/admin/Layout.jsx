@@ -1,19 +1,17 @@
-import { signOut } from "firebase/auth";
-import { useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { FaBook, FaQuestion } from "react-icons/fa";
 import { Link, Navigate, Outlet, useOutletContext } from "react-router-dom";
 
-import { FaFile, FaQuestion, FaSignOutAlt, FaUser } from "react-icons/fa";
-
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
+import { useTheme } from "@mui/material/styles";
 
-import { ColorModeSwitch } from "../../components/ColorModeSwitch";
-import { auth } from "../../firebase";
+import { DrawerToggleButton } from "../../components/DrawerToggleButton";
+import { Header } from "../../components/Header";
+import { useDrawer } from "../../hooks/useDrawer";
 
 export function Layout() {
 	const { currentUserIsAdmin } = useOutletContext();
@@ -22,47 +20,71 @@ export function Layout() {
 		return <Navigate to="/notfound" />;
 	}
 
+	const theme = useTheme();
 	const [tabIndex, setTabIndex] = useState(0);
+	const { drawerProps, drawerOpen, setDrawerOpen, hideDrawerToggle } = useDrawer(theme);
 
-	function handleTabChange(event, newTabIndex) {
-		setTabIndex(newTabIndex);
-	}
+	useEffect(() => {
+		const tabs = document.getElementsByClassName("MuiTab-root");
+		const selectedTabIndex = Array.prototype.findIndex.call(
+			tabs,
+			(x) => x.href === window.location.href,
+		);
+		setTabIndex(selectedTabIndex >= 0 ? selectedTabIndex : false);
+		setDrawerOpen(false);
+	}, [window.location.href]);
 
 	return (
-		<Stack direction="row">
-			<Box className="sidenav">
-				<Button type="button" onClick={() => signOut(auth)} endIcon={<FaSignOutAlt />}>
-					Sign Out
-				</Button>
-				<Divider variant="middle" />
-				<Tabs orientation="vertical" value={tabIndex} onChange={handleTabChange}>
-					<Tab
-						component={Link}
-						to="/admin/account"
-						label="Account"
-						icon={<FaUser />}
-						iconPosition="start"
+		<Fragment>
+			<Header
+				hideDrawerToggleButton={hideDrawerToggle}
+				openDrawer={drawerOpen}
+				setOpenDrawer={setDrawerOpen}
+			/>
+			<Stack direction="row">
+				<Drawer
+					{...drawerProps}
+					open={drawerOpen}
+					ModalProps={{ keepMounted: true, disablePortal: true }}>
+					<DrawerToggleButton
+						hide={hideDrawerToggle}
+						openDrawer={drawerOpen}
+						setOpenDrawer={setDrawerOpen}
+						sx={{ marginLeft: theme.spacing(0.5), marginTop: theme.spacing(2) }}
 					/>
-					<Tab
-						component={Link}
-						to="/admin/books"
-						label="Books"
-						icon={<FaFile />}
-						iconPosition="start"
-					/>
-					<Tab
-						component={Link}
-						to="/admin/requests"
-						label="Requests"
-						icon={<FaQuestion />}
-						iconPosition="start"
-					/>
-				</Tabs>
-				<ColorModeSwitch />
-			</Box>
-			<Container fixed>
-				<Outlet />
-			</Container>
-		</Stack>
+					<Tabs
+						orientation="vertical"
+						value={tabIndex}
+						role="navigation"
+						sx={{
+							"& .MuiTabs-flexContainerVertical": { gap: theme.spacing(2) },
+							"& .MuiTab-root": {
+								minHeight: "auto",
+								fontWeight: "bold",
+								textTransform: "none",
+								justifyContent: "flex-start",
+							},
+						}}>
+						<Tab
+							component={Link}
+							to="/admin/books"
+							label="Books"
+							icon={<FaBook />}
+							iconPosition="start"
+						/>
+						<Tab
+							component={Link}
+							to="/admin/requests"
+							label="Requests"
+							icon={<FaQuestion />}
+							iconPosition="start"
+						/>
+					</Tabs>
+				</Drawer>
+				<Container maxWidth="xl">
+					<Outlet />
+				</Container>
+			</Stack>
+		</Fragment>
 	);
 }

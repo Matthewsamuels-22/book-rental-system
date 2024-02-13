@@ -60,7 +60,7 @@ export function BorrowForm(props) {
 				required
 			/>
 			<BookAutocomplete ref={bookInputRef} defaultValue={props.borrowEntry?.book} required />
-			<Stack direction="row" spacing={2}>
+			<Stack direction="row" flexWrap="wrap" spacing={2} useFlexGap>
 				<TextField
 					type="date"
 					label="Date borrowed"
@@ -68,25 +68,25 @@ export function BorrowForm(props) {
 					defaultValue={dateToIsoDateString(
 						props.borrowEntry?.dateBorrowed ?? new Date(),
 					)}
-					fullWidth
 					required
+					sx={{ minWidth: "20ch", flexGrow: 1 }}
 				/>
 				<TextField
 					type="date"
 					label="Date returned"
 					name="date-returned"
 					defaultValue={props.borrowEntry?.dateReturned}
-					fullWidth
+					sx={{ minWidth: "20ch", flexGrow: 1 }}
 				/>
 			</Stack>
-			<Stack direction="row" spacing={2}>
+			<Stack direction="row" flexWrap="wrap" spacing={2} useFlexGap>
 				<TextField
 					select
 					label="Condition borrowed"
 					name="condition-borrowed"
 					defaultValue={props.borrowEntry?.conditionBorrowed}
 					required
-					sx={{ width: "20ch" }}>
+					sx={{ minWidth: "20ch", flexGrow: 1 }}>
 					<MenuItem />
 					<MenuItem value="A">Excellent</MenuItem>
 					<MenuItem value="B">Good</MenuItem>
@@ -98,7 +98,7 @@ export function BorrowForm(props) {
 					label="Condition returned"
 					name="condition-returned"
 					defaultValue={props.borrowEntry?.conditionReturned}
-					sx={{ width: "20ch" }}>
+					sx={{ minWidth: "20ch", flexGrow: 1 }}>
 					<MenuItem />
 					<MenuItem value="A">Excellent</MenuItem>
 					<MenuItem value="B">Good</MenuItem>

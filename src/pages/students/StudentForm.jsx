@@ -71,7 +71,7 @@ export function StudentForm(props) {
 				<Typography component="legend">Grade Levels</Typography>
 				{gradeLevels.map((level, index) => (
 					<Stack key={level.uuid} spacing={2}>
-						<Stack direction="row" spacing={2}>
+						<Stack direction="row" flexWrap="wrap" spacing={2} useFlexGap>
 							<TextField
 								type="number"
 								label="Grade"
@@ -79,34 +79,38 @@ export function StudentForm(props) {
 								defaultValue={level.grade}
 								required
 								inputProps={{ min: 0 }}
+								sx={{ flexGrow: 1 }}
 							/>
 							<TextField
 								label="Class"
 								name={"class-" + index}
 								defaultValue={level.class}
 								required
+								sx={{ flexGrow: 1 }}
 							/>
 						</Stack>
-						<Stack direction="row" spacing={2}>
+						<Stack direction="row" flexWrap="wrap" spacing={2} useFlexGap>
 							<TextField
 								type="date"
 								label="Log date"
 								name={"log-date-" + index}
 								defaultValue={dateToIsoDateString(level.logDate)}
-								fullWidth
 								required
+								sx={{ flexGrow: 1 }}
 							/>
 							<Button
-								variant="outlined"
 								color="error"
 								onClick={() => removeGradeLevel(index)}
-								disabled={gradeLevels.length === 1}>
+								disabled={gradeLevels.length === 1}
+								sx={{ fontWeight: "bold", textTransform: "none" }}>
 								Remove
 							</Button>
 						</Stack>
 					</Stack>
 				))}
-				<Button onClick={addGradeLevel}>Add grade level</Button>
+				<Button onClick={addGradeLevel} sx={{ fontWeight: "bold", textTransform: "none" }}>
+					Add grade level
+				</Button>
 			</Stack>
 		</Stack>
 	);

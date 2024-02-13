@@ -111,7 +111,7 @@ export function Signin() {
 					</MuiLink>
 				</Stack>
 
-				<Button type="submit" variant="contained">
+				<Button type="submit" variant="contained" size="large" sx={{ fontWeight: "bold" }}>
 					Sign in
 				</Button>
 

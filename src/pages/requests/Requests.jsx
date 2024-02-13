@@ -1,4 +1,5 @@
 import { Fragment, useContext, useEffect, useState } from "react";
+import { FaBan, FaPlus } from "react-icons/fa";
 
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -40,14 +41,20 @@ export function Requests() {
 
 	return (
 		<Fragment>
-			<Stack direction="row">
-				<Button variant="contained" onClick={() => setOpen(true)}>
+			<Stack direction="row" spacing={2}>
+				<Button
+					variant="contained"
+					onClick={() => setOpen(true)}
+					startIcon={<FaPlus />}
+					sx={{ fontWeight: "bold", textTransform: "none" }}>
 					New request
 				</Button>
 				<Button
 					color="error"
 					onClick={handleCancel}
-					disabled={selectedRequests.length === 0}>
+					disabled={selectedRequests.length === 0}
+					startIcon={<FaBan />}
+					sx={{ fontWeight: "bold", textTransform: "none" }}>
 					Cancel
 				</Button>
 			</Stack>

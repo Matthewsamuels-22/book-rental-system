@@ -30,8 +30,6 @@ import { Layout as AdminLayout } from "./pages/admin/Layout";
 import { Books as AdminBooks } from "./pages/admin/books/Books";
 import { Requests as AdminRequests } from "./pages/admin/requests/Requests";
 
-import "./App.css";
-
 function AppRouter() {
 	return (
 		<BrowserRouter>
@@ -71,7 +69,7 @@ function App() {
 
 	const colorMode = useColorMode();
 	const theme = useMemo(
-		() => createTheme({ palette: { mode: colorMode.mode } }),
+		() => createTheme({ palette: { mode: colorMode.mode }, typography: { fontSize: 16 } }),
 		[colorMode.mode],
 	);
 

@@ -10,7 +10,7 @@ import { StudentForm } from "./StudentForm";
 
 export function StudentDialog(props) {
 	return (
-		<Dialog open={props.open} onClose={props.onClose}>
+		<Dialog open={props.open} onClose={props.onClose} fullWidth>
 			<DialogTitle fontWeight="bold">Student</DialogTitle>
 			<DialogContent>
 				<StudentForm id="student-form" student={props.student} postSubmit={props.onClose} />
@@ -20,11 +20,16 @@ export function StudentDialog(props) {
 					type="reset"
 					form="student-form"
 					color="secondary"
-					variant="contained"
-					onClick={props.onClose}>
+					onClick={props.onClose}
+					sx={{ fontWeight: "bold" }}>
 					Cancel
 				</Button>
-				<Button type="submit" form="student-form" variant="contained" autoFocus>
+				<Button
+					type="submit"
+					form="student-form"
+					variant="contained"
+					sx={{ fontWeight: "bold" }}
+					autoFocus>
 					{props.student == null ? "Add" : "Edit"}
 				</Button>
 			</DialogActions>

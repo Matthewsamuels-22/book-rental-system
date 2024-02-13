@@ -5,6 +5,7 @@ export function useColorMode() {
 
 	const isDark = useMemo(() => {
 		window.localStorage.setItem("colorMode", mode);
+		document.documentElement.style.colorScheme = mode;
 		return mode === "dark";
 	}, [mode]);
 

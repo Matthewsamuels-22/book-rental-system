@@ -10,7 +10,7 @@ import { BorrowForm } from "./BorrowForm";
 
 export function BorrowDialog(props) {
 	return (
-		<Dialog open={props.open} onClose={props.onClose}>
+		<Dialog open={props.open} onClose={props.onClose} fullWidth>
 			<DialogTitle fontWeight="bold">Borrow</DialogTitle>
 			<DialogContent>
 				<BorrowForm
@@ -20,10 +20,20 @@ export function BorrowDialog(props) {
 				/>
 			</DialogContent>
 			<DialogActions>
-				<Button type="reset" form="borrow-form" color="secondary" onClick={props.onClose}>
+				<Button
+					type="reset"
+					form="borrow-form"
+					color="secondary"
+					onClick={props.onClose}
+					sx={{ fontWeight: "bold" }}>
 					Cancel
 				</Button>
-				<Button type="submit" form="borrow-form" autoFocus>
+				<Button
+					type="submit"
+					form="borrow-form"
+					variant="contained"
+					sx={{ fontWeight: "bold" }}
+					autoFocus>
 					{props.borrowEntry == null ? "Add" : "Edit"}
 				</Button>
 			</DialogActions>
