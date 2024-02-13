@@ -9,10 +9,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { dateToIsoDateString } from "../../../utilities/dateformat";
 import { BookContext } from "../../../contexts/BookContext";
 import { getBooks } from "../../../helpers/firestore/books";
-
+import { dateToIsoDateString } from "../../../utilities/dateformat";
 
 export function RequestTable(props) {
 	const { books, setBooks } = useContext(BookContext);
@@ -42,7 +41,7 @@ export function RequestTable(props) {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell></TableCell>
+						<TableCell />
 						<TableCell>Requester</TableCell>
 						<TableCell>Book</TableCell>
 						<TableCell>Quantity</TableCell>
@@ -61,7 +60,7 @@ export function RequestTable(props) {
 								/>
 							</TableCell>
 							<TableCell>{request.requester}</TableCell>
-							<TableCell>{books.find(x => x.id === request.book).title}</TableCell>
+							<TableCell>{books.find((x) => x.id === request.book).title}</TableCell>
 							<TableCell>{request.quantity}</TableCell>
 							<TableCell>{dateToIsoDateString(request.requestedDate)}</TableCell>
 							<TableCell>{request.status}</TableCell>
@@ -83,7 +82,7 @@ RequestTable.propTypes = {
 			book: PropTypes.string.isRequired,
 			requestedDate: PropTypes.instanceOf(Date).isRequired,
 			quantity: PropTypes.number.isRequired,
-			status: PropTypes.oneOf(["pending", "canceled", "done"])
-		}).isRequired
-	).isRequired
+			status: PropTypes.oneOf(["pending", "canceled", "done"]),
+		}).isRequired,
+	).isRequired,
 };

@@ -15,6 +15,6 @@ export function useDocumentTitle(title, partial = true) {
 
 		return () => {
 			document.title = import.meta.env.VITE_APP_TITLE;
-		}
+		};
 	}, []);
 }

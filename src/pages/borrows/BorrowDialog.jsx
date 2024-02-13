@@ -11,9 +11,13 @@ import { BorrowForm } from "./BorrowForm";
 export function BorrowDialog(props) {
 	return (
 		<Dialog open={props.open} onClose={props.onClose}>
-			<DialogTitle fontWeight='bold'>Borrow</DialogTitle>
+			<DialogTitle fontWeight="bold">Borrow</DialogTitle>
 			<DialogContent>
-				<BorrowForm id="borrow-form" borrowEntry={props.borrowEntry} postSubmit={props.onClose} />
+				<BorrowForm
+					id="borrow-form"
+					borrowEntry={props.borrowEntry}
+					postSubmit={props.onClose}
+				/>
 			</DialogContent>
 			<DialogActions>
 				<Button type="reset" form="borrow-form" color="secondary" onClick={props.onClose}>
@@ -38,5 +42,5 @@ BorrowDialog.propTypes = {
 		dateReturned: PropTypes.instanceOf(Date),
 		conditionBorrowed: PropTypes.string.isRequired,
 		conditionReturned: PropTypes.string,
-	})
+	}),
 };

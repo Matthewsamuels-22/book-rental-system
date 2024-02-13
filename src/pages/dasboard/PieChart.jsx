@@ -17,18 +17,3 @@ const data = {
 export function PieChart() {
 	return <Pie data={data} />;
 }
-
-//const [data, setData] = useState([]);
-
-	//useEffect(() => {
-		//const fetchData = async () => {
-			//try{
-				//const snapshot = await db.collection("books").get();
-				//const data = snapshot.docs.map((doc) => doc.data());
-				//setData(data);
-			//}catch(error){
-				//console.log(error);
-			//}	
-		//};
-		//fetchData();
-	//}, []);

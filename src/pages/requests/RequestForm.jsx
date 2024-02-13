@@ -4,20 +4,20 @@ import { useContext, useRef } from "react";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
-import { RequestContext } from "../contexts/RequestContext";
-import { auth } from "../firebase";
-import { BookAutocomplete } from "./BookAutocomplete";
-import { addBookRequest } from "../helpers/firestore/requests";
+import { BookAutocomplete } from "../../components/BookAutocomplete";
+import { RequestContext } from "../../contexts/RequestContext";
+import { auth } from "../../firebase";
+import { addBookRequest } from "../../helpers/firestore/requests";
 
 export function RequestForm(props) {
 	const { requests, setRequests } = useContext(RequestContext);
-	const bookInputRef = useRef(null)
+	const bookInputRef = useRef(null);
 
 	async function handleSubmit(event) {
 		event.preventDefault();
 		const formData = new FormData(event.target);
 
-		const book = bookInputRef.current.dataset.id
+		const book = bookInputRef.current.dataset.id;
 		const quantity = formData.get("quantity");
 
 		const requestData = {
@@ -25,10 +25,10 @@ export function RequestForm(props) {
 			quantity: parseInt(quantity),
 			requester: auth.currentUser.uid,
 			requestedDate: new Date(),
-			status: "pending"
+			status: "pending",
 		};
 
-		requestData.id = await addBookRequest(requestData)
+		requestData.id = await addBookRequest(requestData);
 		setRequests([...requests, requestData]);
 		props.postSubmit();
 	}

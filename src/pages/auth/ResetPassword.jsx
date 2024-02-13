@@ -1,6 +1,6 @@
+import { sendPasswordResetEmail } from "firebase/auth";
 import { useRef } from "react";
 import { FaUser } from "react-icons/fa";
-import { sendPasswordResetEmail } from "firebase/auth";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -15,7 +15,7 @@ import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 export function ResetPassword() {
 	const emailInputRef = useRef(null);
 
-	useDocumentTitle("Reset password")
+	useDocumentTitle("Reset password");
 
 	async function handleResetPassword(event) {
 		event.preventDefault();

@@ -1,21 +1,21 @@
 import { Fragment, useContext, useEffect, useState } from "react";
-import { FaPlus, FaPen, FaTrash } from "react-icons/fa";
+import { FaPen, FaPlus, FaTrash } from "react-icons/fa";
 
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
 import { BookContext } from "../../../contexts/BookContext";
-import { BookDialog } from "../../../components/BookDialog";
 import { deleteBook, getBooks } from "../../../helpers/firestore/books";
-import { BookTable } from "./BookTable";
 import { useDocumentTitle } from "../../../hooks/useDocumentTitle";
+import { BookDialog } from "./BookDialog";
+import { BookTable } from "./BookTable";
 
 export function Books() {
 	const { books, setBooks } = useContext(BookContext);
 
 	const [open, setOpen] = useState(false);
-	const [bookSelection, setBookSelection] = useState([]);
+	const [selectedBooks, setSelectedBooks] = useState([]);
 	const [bookSelected, setBookSelected] = useState(null);
 
 	useEffect(() => {
@@ -26,7 +26,7 @@ export function Books() {
 			.catch(console.error);
 	}, []);
 
-	useDocumentTitle("Books")
+	useDocumentTitle("Books");
 
 	function handleAdd() {
 		setBookSelected(null);
@@ -34,17 +34,17 @@ export function Books() {
 	}
 
 	function handleEdit() {
-		const bookId = bookSelection[0];
+		const bookId = selectedBooks[0];
 		const book = books.find((x) => x.id === bookId);
 		setBookSelected(book);
 		setOpen(true);
 	}
 
 	async function handleDelete() {
-		for (const id of bookSelection) await deleteBook(id);
+		for (const id of selectedBooks) await deleteBook(id);
 
-		setBooks(books.filter((x) => !bookSelection.includes(x.id)));
-		setBookSelection([]);
+		setBooks(books.filter((x) => !selectedBooks.includes(x.id)));
+		setSelectedBooks([]);
 	}
 
 	return (
@@ -56,21 +56,25 @@ export function Books() {
 				<Button
 					color="secondary"
 					onClick={handleEdit}
-					disabled={bookSelection.length !== 1}
+					disabled={selectedBooks.length !== 1}
 					startIcon={<FaPen />}>
 					Edit
 				</Button>
 				<Button
 					color="error"
 					onClick={handleDelete}
-					disabled={bookSelection.length === 0}
+					disabled={selectedBooks.length === 0}
 					startIcon={<FaTrash />}>
 					Delete
 				</Button>
 				<TextField type="search" placeholder="Search" />
 			</Stack>
 
-			<BookTable books={books} bookSelection={bookSelection} setBookSelection={setBookSelection} />
+			<BookTable
+				records={books}
+				selectedRecords={selectedBooks}
+				setSelectedRecords={setSelectedBooks}
+			/>
 			<BookDialog open={open} onClose={() => setOpen(false)} book={bookSelected} />
 		</Fragment>
 	);

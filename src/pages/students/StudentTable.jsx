@@ -11,16 +11,16 @@ import TableRow from "@mui/material/TableRow";
 import { dateToIsoDateString } from "../../utilities/dateformat";
 
 export function StudentTable(props) {
-	function handleStudentSelect(event) {
+	function handleRecordSelect(event) {
 		const checkbox = event.target;
-		const studentId = checkbox.dataset.id;
+		const recordId = checkbox.dataset.id;
 
 		if (checkbox.checked) {
-			props.setStudentSelection([...props.studentSelection, studentId]);
+			props.setSelectedRecords([...props.selectedRecords, recordId]);
 			return;
 		}
 
-		props.setStudentSelection(props.studentSelection.filter((x) => x !== studentId));
+		props.setSelectedRecords(props.selectedRecords.filter((x) => x !== recordId));
 	}
 
 	return (
@@ -28,7 +28,7 @@ export function StudentTable(props) {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell></TableCell>
+						<TableCell />
 						<TableCell>ID</TableCell>
 						<TableCell>Name</TableCell>
 						<TableCell>Grade</TableCell>
@@ -37,12 +37,12 @@ export function StudentTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.students.map((student, index) => (
+					{props.records.map((student, index) => (
 						<TableRow key={index}>
 							<TableCell>
 								<Checkbox
-									onChange={handleStudentSelect}
-									disabled={props.studentSelection.length > 10}
+									onChange={handleRecordSelect}
+									disabled={props.selectedRecords.length > 10}
 									inputProps={{ "data-id": student.id }}
 								/>
 							</TableCell>
@@ -50,7 +50,9 @@ export function StudentTable(props) {
 							<TableCell>{student.name}</TableCell>
 							<TableCell>{student.gradeLevels.at(-1).grade}</TableCell>
 							<TableCell>{student.gradeLevels.at(-1).class}</TableCell>
-							<TableCell>{dateToIsoDateString(student.gradeLevels.at(-1).logDate)}</TableCell>
+							<TableCell>
+								{dateToIsoDateString(student.gradeLevels.at(-1).logDate)}
+							</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
@@ -59,20 +61,21 @@ export function StudentTable(props) {
 	);
 }
 
-
 StudentTable.propTypes = {
-	studentSelection: PropTypes.arrayOf(PropTypes.string).isRequired,
-	setStudentSelection: PropTypes.func.isRequired,
-	students: PropTypes.arrayOf(
+	selectedRecords: PropTypes.arrayOf(PropTypes.string).isRequired,
+	setSelectedRecords: PropTypes.func.isRequired,
+	records: PropTypes.arrayOf(
 		PropTypes.exact({
 			id: PropTypes.string.isRequired,
 			schoolId: PropTypes.string.isRequired,
 			name: PropTypes.string.isRequired,
-			gradeLevels: PropTypes.arrayOf(PropTypes.exact({
-				grade: PropTypes.number.isRequired,
-				class: PropTypes.string.isRequired,
-				logDate: PropTypes.instanceOf(Date).isRequired
-			}).isRequired).isRequired,
-		}).isRequired
-	).isRequired
+			gradeLevels: PropTypes.arrayOf(
+				PropTypes.exact({
+					grade: PropTypes.number.isRequired,
+					class: PropTypes.string.isRequired,
+					logDate: PropTypes.instanceOf(Date).isRequired,
+				}).isRequired,
+			).isRequired,
+		}).isRequired,
+	).isRequired,
 };

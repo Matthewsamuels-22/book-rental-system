@@ -11,12 +11,21 @@ import { InventoryForm } from "./InventoryForm";
 export function InventoryDialog(props) {
 	return (
 		<Dialog open={props.open} onClose={props.onClose} fullWidth>
-			<DialogTitle fontWeight='bold'>Inventory</DialogTitle>
+			<DialogTitle fontWeight="bold">Inventory</DialogTitle>
 			<DialogContent>
-				<InventoryForm id="inventory-form" inventory={props.inventory} postSubmit={props.onClose} />
+				<InventoryForm
+					id="inventory-form"
+					inventory={props.inventory}
+					postSubmit={props.onClose}
+				/>
 			</DialogContent>
 			<DialogActions>
-				<Button type="reset" form="inventory-form" color="secondary" variant="contained" onClick={props.onClose}>
+				<Button
+					type="reset"
+					form="inventory-form"
+					color="secondary"
+					variant="contained"
+					onClick={props.onClose}>
 					Cancel
 				</Button>
 				<Button type="submit" form="inventory-form" variant="contained" autoFocus>

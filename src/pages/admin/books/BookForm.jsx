@@ -6,8 +6,8 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-import { BookContext } from "../contexts/BookContext";
-import { addBook, updateBook } from "../helpers/firestore/books";
+import { BookContext } from "../../../contexts/BookContext";
+import { addBook, updateBook } from "../../../helpers/firestore/books";
 
 function createAuthor() {
 	return {

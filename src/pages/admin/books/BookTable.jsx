@@ -8,18 +8,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-
 export function BookTable(props) {
-	function handleBookSelect(event) {
+	function handleRecordSelect(event) {
 		const checkbox = event.target;
-		const bookId = checkbox.dataset.id;
+		const recordId = checkbox.dataset.id;
 
 		if (checkbox.checked) {
-			props.setBookSelection([...props.bookSelection, bookId]);
+			props.setSelectedRecords([...props.selectedRecords, recordId]);
 			return;
 		}
 
-		props.setBookSelection(props.bookSelection.filter((x) => x !== bookId));
+		props.setSelectedRecords(props.selectedRecords.filter((x) => x !== recordId));
 	}
 
 	return (
@@ -27,7 +26,7 @@ export function BookTable(props) {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell></TableCell>
+						<TableCell />
 						<TableCell>Title</TableCell>
 						<TableCell>Authors</TableCell>
 						<TableCell>Edition</TableCell>
@@ -37,12 +36,12 @@ export function BookTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.books.map((book, index) => (
+					{props.records.map((book, index) => (
 						<TableRow key={index}>
 							<TableCell>
 								<Checkbox
-									onChange={handleBookSelect}
-									disabled={props.bookSelection.length > 10}
+									onChange={handleRecordSelect}
+									disabled={props.selectedRecords.length > 10}
 									inputProps={{ "data-id": book.id }}
 								/>
 							</TableCell>
@@ -61,9 +60,9 @@ export function BookTable(props) {
 }
 
 BookTable.propTypes = {
-	bookSelection: PropTypes.arrayOf(PropTypes.string).isRequired,
-	setBookSelection: PropTypes.func.isRequired,
-	books: PropTypes.arrayOf(
+	selectedRecords: PropTypes.arrayOf(PropTypes.string).isRequired,
+	setSelectedRecords: PropTypes.func.isRequired,
+	records: PropTypes.arrayOf(
 		PropTypes.exact({
 			id: PropTypes.string.isRequired,
 			title: PropTypes.string.isRequired,
@@ -72,6 +71,6 @@ BookTable.propTypes = {
 			volume: PropTypes.number.isRequired,
 			publisher: PropTypes.string.isRequired,
 			yearPublished: PropTypes.number.isRequired,
-		}).isRequired
-	).isRequired
+		}).isRequired,
+	).isRequired,
 };

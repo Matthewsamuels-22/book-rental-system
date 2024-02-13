@@ -4,17 +4,17 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
-import { StudentTable } from "./StudentTable";
-import { StudentDialog } from "./StudentDialog";
 import { StudentContext } from "../../contexts/StudentContext";
 import { deleteStudent, getStudents } from "../../helpers/firestore/students";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import { StudentDialog } from "./StudentDialog";
+import { StudentTable } from "./StudentTable";
 
 export function Students() {
 	const { students, setStudents } = useContext(StudentContext);
 
 	const [open, setOpen] = useState(false);
-	const [studentSelection, setStudentSelection] = useState([]);
+	const [selectedStudents, setSelectedStudents] = useState([]);
 	const [studentSelected, setStudentSelected] = useState(null);
 
 	useEffect(() => {
@@ -33,34 +33,52 @@ export function Students() {
 	}
 
 	function handleEdit() {
-		const studentId = studentSelection[0];
+		const studentId = selectedStudents[0];
 		const student = students.find((x) => x.id === studentId);
 		setStudentSelected(student);
 		setOpen(true);
 	}
 
 	async function handleDelete() {
-		for (const id of studentSelection) await deleteStudent(id);
+		for (const id of selectedStudents) await deleteStudent(id);
 
-		setStudents(students.filter((x) => !studentSelection.includes(x.id)));
-		setStudentSelection([]);
+		setStudents(students.filter((x) => !selectedStudents.includes(x.id)));
+		setSelectedStudents([]);
 	}
 
-	function handleSearch(event) {
-
-	}
+	function handleSearch(event) {}
 
 	return (
 		<Fragment>
-			<Stack direction='row'>
-				<Button variant="contained" onClick={handleAdd}>Add</Button>
-				<Button color="secondary" onClick={handleEdit} disabled={studentSelection.length !== 1}>Edit</Button>
-				<Button color="error" onClick={handleDelete} disabled={studentSelection.length === 0}>Delete</Button>
-				<TextField type="search" placeholder="Search" onChange={(e) => console.log(e.target.value)} />
+			<Stack direction="row">
+				<Button variant="contained" onClick={handleAdd}>
+					Add
+				</Button>
+				<Button
+					color="secondary"
+					onClick={handleEdit}
+					disabled={selectedStudents.length !== 1}>
+					Edit
+				</Button>
+				<Button
+					color="error"
+					onClick={handleDelete}
+					disabled={selectedStudents.length === 0}>
+					Delete
+				</Button>
+				<TextField
+					type="search"
+					placeholder="Search"
+					onChange={(e) => console.log(e.target.value)}
+				/>
 			</Stack>
 
-			<StudentTable students={students} studentSelection={studentSelection} setStudentSelection={setStudentSelection} />
+			<StudentTable
+				records={students}
+				selectedRecords={selectedStudents}
+				setSelectedRecords={setSelectedStudents}
+			/>
 			<StudentDialog open={open} onClose={() => setOpen(false)} student={studentSelected} />
 		</Fragment>
-	)
+	);
 }

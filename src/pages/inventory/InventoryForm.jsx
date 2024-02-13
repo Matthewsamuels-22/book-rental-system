@@ -1,8 +1,6 @@
-import { useContext, useRef, useState } from "react";
 import PropTypes from "prop-types";
+import { useContext, useRef } from "react";
 
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
@@ -11,8 +9,8 @@ import { InventoryContext } from "../../contexts/InventoryContext";
 import { addInventoryItem, updateInventoryItem } from "../../helpers/firestore/inventory";
 
 export function InventoryForm(props) {
-	const { inventory, setInventory } = useContext(InventoryContext)
-	const bookInputRef = useRef(null)
+	const { inventory, setInventory } = useContext(InventoryContext);
+	const bookInputRef = useRef(null);
 
 	async function handleSubmit(event) {
 		event.preventDefault();
@@ -20,16 +18,16 @@ export function InventoryForm(props) {
 
 		const inventoryData = {
 			book: bookInputRef.current.dataset.id,
-			quantity: parseInt(formData.get('quantity'))
-		}
+			quantity: parseInt(formData.get("quantity")),
+		};
 
 		if (props.inventory == null) {
-			inventoryData.id = await addInventoryItem(inventoryData)
-			setInventory([...inventory, inventoryData])
+			inventoryData.id = await addInventoryItem(inventoryData);
+			setInventory([...inventory, inventoryData]);
 		} else {
-			await updateInventoryItem(props.inventory.id, inventoryData)
-			inventoryData.id = props.inventory.id
-			const inventoryIndex = inventory.findIndex(x => x.id === inventoryData.id)
+			await updateInventoryItem(props.inventory.id, inventoryData);
+			inventoryData.id = props.inventory.id;
+			const inventoryIndex = inventory.findIndex((x) => x.id === inventoryData.id);
 			setInventory(inventory.toSpliced(inventoryIndex, 1, inventoryData));
 		}
 
@@ -37,11 +35,22 @@ export function InventoryForm(props) {
 	}
 
 	return (
-		<Stack component='form' id={props.id} onSubmit={handleSubmit} spacing={2}>
-			<BookAutocomplete ref={bookInputRef} defaultValue={props.inventory?.book} required inputProps={{ min: 0 }} />
-			<TextField type="number" label="Quantity" name="quantity" defaultValue={props.inventory?.quantity} required />
+		<Stack component="form" id={props.id} onSubmit={handleSubmit} spacing={2}>
+			<BookAutocomplete
+				ref={bookInputRef}
+				defaultValue={props.inventory?.book}
+				required
+				inputProps={{ min: 0 }}
+			/>
+			<TextField
+				type="number"
+				label="Quantity"
+				name="quantity"
+				defaultValue={props.inventory?.quantity}
+				required
+			/>
 		</Stack>
-	)
+	);
 }
 
 InventoryForm.propTypes = {
