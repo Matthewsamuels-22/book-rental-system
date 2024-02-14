@@ -1,5 +1,32 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import {
+	addDoc,
+	collection,
+	deleteDoc,
+	doc,
+	getDocs,
+	updateDoc,
+	writeBatch,
+} from "firebase/firestore";
 import { auth, firestore } from "../../firebase";
+
+/**
+ * @param {string} docId
+ * @param {object[]} borrows
+ */
+export async function deleteEverythingForStudent(docId, borrows) {
+	console.debug("deleteEverythingForStudent:", docId, borrows);
+	const batch = writeBatch(firestore);
+
+	const documentRef = doc(firestore, "users", auth.currentUser.uid, "students", docId);
+	batch.delete(documentRef);
+
+	borrows.forEach((x) => {
+		const documentRef = doc(firestore, "users", auth.currentUser.uid, "borrows", x.id);
+		batch.delete(documentRef);
+	});
+
+	await batch.commit();
+}
 
 /**
  * @param {string} docId

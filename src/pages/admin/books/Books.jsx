@@ -7,13 +7,16 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
 import { BookContext } from "../../../contexts/BookContext";
-import { deleteBook, getBooks } from "../../../helpers/firestore/books";
+import { RequestContext } from "../../../contexts/RequestContext";
+import { deleteEverythingForBook, getBooks } from "../../../helpers/firestore/books";
+import { getBookRequests } from "../../../helpers/firestore/requests";
 import { useDocumentTitle } from "../../../hooks/useDocumentTitle";
 import { BookDialog } from "./BookDialog";
 import { BookTable } from "./BookTable";
 
 export function Books() {
 	const { books, setBooks } = useContext(BookContext);
+	const { requests, setRequests } = useContext(RequestContext);
 
 	const [open, setOpen] = useState(false);
 	const [selectedBooks, setSelectedBooks] = useState([]);
@@ -42,10 +45,15 @@ export function Books() {
 	}
 
 	async function handleDelete() {
-		for (const id of selectedBooks) await deleteBook(id);
+		const initialRequests = requests.length === 0 ? await getBookRequests() : requests;
+		const preservedRequests = initialRequests.filter((x) => !selectedBooks.includes(x.book));
+		const discardedRequests = initialRequests.filter((x) => selectedBooks.includes(x.book));
+
+		for (const id of selectedBooks) await deleteEverythingForBook(id, discardedRequests);
 
 		setBooks(books.filter((x) => !selectedBooks.includes(x.id)));
 		setSelectedBooks([]);
+		setRequests(preservedRequests);
 	}
 
 	return (

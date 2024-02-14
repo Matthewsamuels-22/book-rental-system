@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
+import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -19,18 +20,22 @@ export function BorrowTable(props) {
 	const { books, setBooks } = useContext(BookContext);
 	const { students, setStudents } = useContext(StudentContext);
 
+	const [dataIsLoaded, setDataIsLoaded] = useState(false);
+
 	useEffect(() => {
+		const dataRequests = [];
+
 		if (books.length === 0) {
-			getBooks()
-				.then((x) => setBooks(x))
-				.catch(console.error);
+			const booksRequest = getBooks().then((x) => setBooks(x));
+			dataRequests.push(booksRequest);
 		}
 
 		if (students.length === 0) {
-			getStudents()
-				.then((x) => setStudents(x))
-				.catch(console.error);
+			const studentsRequest = getStudents().then((x) => setStudents(x));
+			dataRequests.push(studentsRequest);
 		}
+
+		Promise.all(dataRequests).then(() => setDataIsLoaded(true));
 	}, []);
 
 	function handleRecordSelect(event) {
@@ -43,6 +48,10 @@ export function BorrowTable(props) {
 		}
 
 		props.setSelectedRecords(props.selectedRecords.filter((x) => x !== recordId));
+	}
+
+	if (!dataIsLoaded) {
+		return <Box>Loading...</Box>;
 	}
 
 	return (
