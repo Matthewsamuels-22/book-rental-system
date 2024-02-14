@@ -6,13 +6,16 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
+import { BorrowContext } from "../../contexts/BorrowContext";
 import { StudentContext } from "../../contexts/StudentContext";
-import { deleteStudent, getStudents } from "../../helpers/firestore/students";
+import { getBorrowEntries } from "../../helpers/firestore/borrows";
+import { deleteEverythingForStudent, getStudents } from "../../helpers/firestore/students";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import { StudentDialog } from "./StudentDialog";
 import { StudentTable } from "./StudentTable";
 
 export function Students() {
+	const { borrows, setBorrows } = useContext(BorrowContext);
 	const { students, setStudents } = useContext(StudentContext);
 
 	const [open, setOpen] = useState(false);
@@ -42,10 +45,19 @@ export function Students() {
 	}
 
 	async function handleDelete() {
-		for (const id of selectedStudents) await deleteStudent(id);
+		const initialBorrows = borrows.length === 0 ? await getBorrowEntries() : borrows;
+		const preservedBorrows = initialBorrows.filter(
+			(x) => !selectedStudents.includes(x.borrower),
+		);
+		const discardedBorrows = initialBorrows.filter((x) =>
+			selectedStudents.includes(x.borrower),
+		);
+
+		for (const id of selectedStudents) await deleteEverythingForStudent(id, discardedBorrows);
 
 		setStudents(students.filter((x) => !selectedStudents.includes(x.id)));
 		setSelectedStudents([]);
+		setBorrows(preservedBorrows);
 	}
 
 	function handleSearch(event) {}

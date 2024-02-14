@@ -1,5 +1,40 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import {
+	addDoc,
+	collection,
+	collectionGroup,
+	deleteDoc,
+	doc,
+	getDocs,
+	query,
+	updateDoc,
+	where,
+	writeBatch,
+} from "firebase/firestore";
 import { firestore } from "../../firebase";
+
+/**
+ * @param {string} docId
+ * @param {object[]} requests
+ */
+export async function deleteEverythingForBook(docId, requests) {
+	console.debug("deleteEverythingForBook:", docId, requests);
+	const batch = writeBatch(firestore);
+
+	const documentRef = doc(firestore, "books", docId);
+	batch.delete(documentRef);
+
+	const inventoriesQuery = query(collectionGroup(firestore, "books"), where("book", "==", docId));
+	const inventoriesQuerySnapshot = await getDocs(inventoriesQuery);
+	inventoriesQuerySnapshot.forEach((x) => batch.delete(x.ref));
+
+	const borrowsQuery = query(collectionGroup(firestore, "borrows"), where("book", "==", docId));
+	const borrowsQuerySnapshot = await getDocs(borrowsQuery);
+	borrowsQuerySnapshot.forEach((x) => batch.delete(x.ref));
+
+	requests.forEach((x) => batch.delete(doc(firestore, "requests", x.id)));
+
+	await batch.commit();
+}
 
 /**
  * @param {string} docId
