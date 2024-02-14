@@ -1,46 +1,50 @@
-import { Bar } from "react-chartjs-2";
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { getDocs, collection } from "firebase/firestore";
-import { auth, firestore } from "../../firebase";
+import { Bar } from "react-chartjs-2";
 
+export function BarChart(props) {
+	const [gradeCount, setGradeCount] = useState({});
 
-const labels = ["Students"];
+	const entries = Object.entries(gradeCount);
+	const data = {
+		labels: entries.map((x) => "Grade " + x[0]),
+		datasets: [
+			{
+				label: "Total",
+				data: entries.map((x) => x[1]),
+				borderWidth: 1,
+			},
+		],
+	};
 
-export function BarChart() {
-  const [data, setData] = useState({
-    labels: labels,
-    datasets: [
-      {
-        label: "Students",
-        data: [0],
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-    ],
-  });
+	useEffect(() => {
+		props.records.forEach((student) => {
+			const grade = student.gradeLevels.at(-1).grade;
+			if (!(grade in gradeCount)) gradeCount[grade] = 0;
+			gradeCount[grade]++;
+		});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const collectionRef = collection(firestore, "users", auth.currentUser.uid, "students");
-        const querySnapshot = await getDocs(collectionRef);
-        const studentCount = querySnapshot.size;
+		setGradeCount({ ...gradeCount });
+	}, [props.records]);
 
-        setData(prevData => ({
-          ...prevData,
-          datasets: [{
-            ...prevData.datasets[0],
-            data: [studentCount], 
-          }]
-        }));
-      } catch (error) {
-        console.error("Error fetching data from Firestore: ", error);
-      }
-    };
-
-    fetchData();
-  }, [auth]); 
-
-  return <Bar data={data} />;
+	return (
+		<Bar data={data} options={{ plugins: { title: { display: true, text: "Students" } } }} />
+	);
 }
+
+BarChart.propTypes = {
+	records: PropTypes.arrayOf(
+		PropTypes.exact({
+			id: PropTypes.string.isRequired,
+			schoolId: PropTypes.string.isRequired,
+			name: PropTypes.string.isRequired,
+			gradeLevels: PropTypes.arrayOf(
+				PropTypes.exact({
+					grade: PropTypes.number.isRequired,
+					class: PropTypes.string.isRequired,
+					logDate: PropTypes.instanceOf(Date).isRequired,
+				}).isRequired,
+			).isRequired,
+		}).isRequired,
+	).isRequired,
+};
