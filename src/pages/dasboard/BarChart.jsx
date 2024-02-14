@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import { ColorModeContext } from "../../contexts/ColorModeContext";
 
 import { ColorModeContext } from "../../contexts/ColorModeContext";
 
