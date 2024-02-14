@@ -19,7 +19,7 @@ export function Dashboard() {
 	const { students, setStudents } = useContext(StudentContext);
 
 	const unreturnedIds = useMemo(
-		() => new Set(borrows.filter((x) => x.dateReturned === null).map((x) => x.borrower)),
+		() => new Set(borrows.filter((x) => x.dateReturned == null).map((x) => x.borrower)),
 		[borrows],
 	);
 

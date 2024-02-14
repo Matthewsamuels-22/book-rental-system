@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Bar } from "react-chartjs-2";
+
 import { ColorModeContext } from "../../contexts/ColorModeContext";
 
 export function BarChart(props) {
@@ -22,13 +23,15 @@ export function BarChart(props) {
 	};
 
 	useEffect(() => {
+		const newGradeCount = {};
+
 		props.records.forEach((student) => {
 			const grade = student.gradeLevels.at(-1).grade;
-			if (!(grade in gradeCount)) gradeCount[grade] = 0;
-			gradeCount[grade]++;
+			if (!(grade in newGradeCount)) newGradeCount[grade] = 0;
+			newGradeCount[grade]++;
 		});
 
-		setGradeCount({ ...gradeCount });
+		setGradeCount(newGradeCount);
 	}, [props.records]);
 
 	return (

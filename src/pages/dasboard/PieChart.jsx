@@ -19,7 +19,7 @@ export function PieChart(props) {
 	};
 
 	useEffect(() => {
-		const count = props.records.filter((x) => x.dateReturned === null).length;
+		const count = props.records.filter((x) => x.dateReturned == null).length;
 		setBorrowCount(count);
 	}, [props.records]);
 
