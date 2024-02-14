@@ -1,19 +1,53 @@
+import PropTypes from "prop-types";
+import { useEffect, useMemo, useState } from "react";
 import { Pie } from "react-chartjs-2";
 
-const labels = ["January", "February", "March", "April", "May", "June"];
+export function PieChart(props) {
+	const [borrowCount, setBorrowCount] = useState(0);
 
-const data = {
-	labels: labels,
-	datasets: [
-		{
-			label: "My First dataset",
-			backgroundColor: "rgb(255, 99, 132)",
-			borderColor: "rgb(255, 99, 132)",
-			data: [0, 10, 5, 2, 20, 30, 45],
-		},
-	],
-};
+	const uuid = useMemo(() => window.crypto.randomUUID(), [props.theme]);
 
-export function PieChart() {
-	return <Pie data={data} />;
+	const data = {
+		labels: ["Borrowed", "Returned"],
+		datasets: [
+			{
+				label: "Books",
+				data: [borrowCount, props.records.length - borrowCount],
+				borderColor: props.theme.palette.background.default,
+			},
+		],
+	};
+
+	useEffect(() => {
+		const count = props.records.filter((x) => x.dateReturned == null).length;
+		setBorrowCount(count);
+	}, [props.records]);
+
+	return (
+		<Pie
+			key={uuid}
+			data={data}
+			options={{
+				plugins: {
+					title: { display: true, text: "Books Borrowed and Returned" },
+					colors: { forceOverride: true },
+				},
+			}}
+		/>
+	);
 }
+
+PieChart.propTypes = {
+	theme: PropTypes.object.isRequired,
+	records: PropTypes.arrayOf(
+		PropTypes.exact({
+			id: PropTypes.string.isRequired,
+			borrower: PropTypes.string.isRequired,
+			book: PropTypes.string.isRequired,
+			dateBorrowed: PropTypes.instanceOf(Date).isRequired,
+			dateReturned: PropTypes.instanceOf(Date),
+			conditionBorrowed: PropTypes.string.isRequired,
+			conditionReturned: PropTypes.string,
+		}).isRequired,
+	).isRequired,
+};
