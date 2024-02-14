@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Pie } from "react-chartjs-2";
 
 export function PieChart(props) {
 	const [borrowCount, setBorrowCount] = useState(0);
+
+	const uuid = useMemo(() => window.crypto.randomUUID(), [props.theme]);
 
 	const data = {
 		labels: ["Borrowed", "Returned"],
@@ -23,6 +25,7 @@ export function PieChart(props) {
 
 	return (
 		<Pie
+			key={uuid}
 			data={data}
 			options={{
 				plugins: {

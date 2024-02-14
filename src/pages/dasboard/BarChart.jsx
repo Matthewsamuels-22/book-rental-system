@@ -1,9 +1,13 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import { ColorModeContext } from "../../contexts/ColorModeContext";
 
 export function BarChart(props) {
+	const colorMode = useContext(ColorModeContext);
 	const [gradeCount, setGradeCount] = useState({});
+
+	const uuid = useMemo(() => window.crypto.randomUUID(), [colorMode.isDark]);
 
 	const entries = Object.entries(gradeCount);
 	const data = {
@@ -28,7 +32,11 @@ export function BarChart(props) {
 	}, [props.records]);
 
 	return (
-		<Bar data={data} options={{ plugins: { title: { display: true, text: "Students" } } }} />
+		<Bar
+			key={uuid}
+			data={data}
+			options={{ plugins: { title: { display: true, text: "Students" } } }}
+		/>
 	);
 }
 
