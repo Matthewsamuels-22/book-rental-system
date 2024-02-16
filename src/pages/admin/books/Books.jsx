@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useMemo, useState } from "react";
 import { FaPen, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 
 import Button from "@mui/material/Button";
@@ -11,6 +11,7 @@ import { RequestContext } from "../../../contexts/RequestContext";
 import { deleteEverythingForBook, getBooks } from "../../../helpers/firestore/books";
 import { getBookRequests } from "../../../helpers/firestore/requests";
 import { useDocumentTitle } from "../../../hooks/useDocumentTitle";
+import { useSearchField } from "../../../hooks/useSearchField";
 import { BookDialog } from "./BookDialog";
 import { BookTable } from "./BookTable";
 
@@ -21,6 +22,24 @@ export function Books() {
 	const [open, setOpen] = useState(false);
 	const [selectedBooks, setSelectedBooks] = useState([]);
 	const [bookSelected, setBookSelected] = useState(null);
+
+	const {
+		searchResults: rawSearchResults,
+		emptySearchResults,
+		handleSearch,
+	} = useSearchField((query) =>
+		books.filter(
+			(x) =>
+				x.title.toLowerCase().includes(query) ||
+				x.publisher.toLowerCase().includes(query) ||
+				x.authors.some((a) => a.toLowerCase().includes(query)),
+		),
+	);
+
+	const searchResults = useMemo(
+		() => books.filter((x) => rawSearchResults.some((y) => y.id === x.id)),
+		[rawSearchResults, books],
+	);
 
 	useEffect(() => {
 		if (books.length !== 0) return;
@@ -86,6 +105,8 @@ export function Books() {
 					type="search"
 					placeholder="Search"
 					size="small"
+					onChange={handleSearch}
+					onKeyDown={handleSearch}
 					InputProps={{
 						startAdornment: (
 							<InputAdornment position="start">
@@ -97,7 +118,7 @@ export function Books() {
 			</Stack>
 
 			<BookTable
-				records={books}
+				records={!emptySearchResults ? searchResults : books}
 				selectedRecords={selectedBooks}
 				setSelectedRecords={setSelectedBooks}
 			/>

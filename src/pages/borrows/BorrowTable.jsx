@@ -1,7 +1,5 @@
 import PropTypes from "prop-types";
-import { useContext, useEffect, useState } from "react";
 
-import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,34 +8,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { BookContext } from "../../contexts/BookContext";
-import { StudentContext } from "../../contexts/StudentContext";
-import { getBooks } from "../../helpers/firestore/books";
-import { getStudents } from "../../helpers/firestore/students";
 import { dateToIsoDateString } from "../../utilities/dateformat";
 
 export function BorrowTable(props) {
-	const { books, setBooks } = useContext(BookContext);
-	const { students, setStudents } = useContext(StudentContext);
-
-	const [dataIsLoaded, setDataIsLoaded] = useState(false);
-
-	useEffect(() => {
-		const dataRequests = [];
-
-		if (books.length === 0) {
-			const booksRequest = getBooks().then((x) => setBooks(x));
-			dataRequests.push(booksRequest);
-		}
-
-		if (students.length === 0) {
-			const studentsRequest = getStudents().then((x) => setStudents(x));
-			dataRequests.push(studentsRequest);
-		}
-
-		Promise.all(dataRequests).then(() => setDataIsLoaded(true));
-	}, []);
-
 	function handleRecordSelect(event) {
 		const checkbox = event.target;
 		const recordId = checkbox.dataset.id;
@@ -48,10 +21,6 @@ export function BorrowTable(props) {
 		}
 
 		props.setSelectedRecords(props.selectedRecords.filter((x) => x !== recordId));
-	}
-
-	if (!dataIsLoaded) {
-		return <Box>Loading...</Box>;
 	}
 
 	return (
@@ -69,8 +38,8 @@ export function BorrowTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.records.map((entry, index) => (
-						<TableRow key={index}>
+					{props.records.map((entry) => (
+						<TableRow key={entry.id}>
 							<TableCell>
 								<Checkbox
 									onChange={handleRecordSelect}
@@ -79,9 +48,11 @@ export function BorrowTable(props) {
 								/>
 							</TableCell>
 							<TableCell>
-								{students.find((x) => x.id === entry.borrower).name}
+								{props.students.find((x) => x.id === entry.borrower).name}
 							</TableCell>
-							<TableCell>{books.find((x) => x.id === entry.book).title}</TableCell>
+							<TableCell>
+								{props.books.find((x) => x.id === entry.book).title}
+							</TableCell>
 							<TableCell>{dateToIsoDateString(entry.dateBorrowed)}</TableCell>
 							<TableCell>{dateToIsoDateString(entry.dateReturned)}</TableCell>
 							<TableCell>{entry.conditionBorrowed}</TableCell>
@@ -106,6 +77,31 @@ BorrowTable.propTypes = {
 			dateReturned: PropTypes.instanceOf(Date),
 			conditionBorrowed: PropTypes.string.isRequired,
 			conditionReturned: PropTypes.string,
+		}).isRequired,
+	).isRequired,
+	books: PropTypes.arrayOf(
+		PropTypes.exact({
+			id: PropTypes.string.isRequired,
+			title: PropTypes.string.isRequired,
+			authors: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+			edition: PropTypes.number.isRequired,
+			volume: PropTypes.number.isRequired,
+			publisher: PropTypes.string.isRequired,
+			yearPublished: PropTypes.number.isRequired,
+		}).isRequired,
+	).isRequired,
+	students: PropTypes.arrayOf(
+		PropTypes.exact({
+			id: PropTypes.string.isRequired,
+			schoolId: PropTypes.string.isRequired,
+			name: PropTypes.string.isRequired,
+			gradeLevels: PropTypes.arrayOf(
+				PropTypes.exact({
+					grade: PropTypes.number.isRequired,
+					class: PropTypes.string.isRequired,
+					logDate: PropTypes.instanceOf(Date).isRequired,
+				}).isRequired,
+			).isRequired,
 		}).isRequired,
 	).isRequired,
 };

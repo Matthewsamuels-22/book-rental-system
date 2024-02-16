@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { useContext, useEffect } from "react";
 
 import Checkbox from "@mui/material/Checkbox";
 import Table from "@mui/material/Table";
@@ -9,20 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { BookContext } from "../../contexts/BookContext";
-import { getBooks } from "../../helpers/firestore/books";
-
 export function InventoryTable(props) {
-	const { books, setBooks } = useContext(BookContext);
-
-	useEffect(() => {
-		if (books.length === 0) {
-			getBooks()
-				.then((x) => setBooks(x))
-				.catch(console.error);
-		}
-	}, []);
-
 	function handleRecordSelect(event) {
 		const checkbox = event.target;
 		const recordId = checkbox.dataset.id;
@@ -46,8 +32,8 @@ export function InventoryTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.records.map((entry, index) => (
-						<TableRow key={index}>
+					{props.records.map((entry) => (
+						<TableRow key={entry.id}>
 							<TableCell>
 								<Checkbox
 									onChange={handleRecordSelect}
@@ -55,7 +41,9 @@ export function InventoryTable(props) {
 									inputProps={{ "data-id": entry.id }}
 								/>
 							</TableCell>
-							<TableCell>{books.find((x) => x.id === entry.book).title}</TableCell>
+							<TableCell>
+								{props.books.find((x) => x.id === entry.book).title}
+							</TableCell>
 							<TableCell>{entry.quantity}</TableCell>
 						</TableRow>
 					))}
@@ -73,6 +61,17 @@ InventoryTable.propTypes = {
 			id: PropTypes.string.isRequired,
 			book: PropTypes.string.isRequired,
 			quantity: PropTypes.number.isRequired,
+		}).isRequired,
+	).isRequired,
+	books: PropTypes.arrayOf(
+		PropTypes.exact({
+			id: PropTypes.string.isRequired,
+			title: PropTypes.string.isRequired,
+			authors: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+			edition: PropTypes.number.isRequired,
+			volume: PropTypes.number.isRequired,
+			publisher: PropTypes.string.isRequired,
+			yearPublished: PropTypes.number.isRequired,
 		}).isRequired,
 	).isRequired,
 };

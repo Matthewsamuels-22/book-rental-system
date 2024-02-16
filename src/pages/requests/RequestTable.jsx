@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { useContext, useEffect } from "react";
 
 import Checkbox from "@mui/material/Checkbox";
 import Table from "@mui/material/Table";
@@ -9,21 +8,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { BookContext } from "../../contexts/BookContext";
-import { getBooks } from "../../helpers/firestore/books";
 import { dateToIsoDateString } from "../../utilities/dateformat";
 
 export function RequestTable(props) {
-	const { books, setBooks } = useContext(BookContext);
-
-	useEffect(() => {
-		if (books.length === 0) {
-			getBooks()
-				.then((x) => setBooks(x))
-				.catch(console.error);
-		}
-	}, []);
-
 	function handleRecordSelect(event) {
 		const checkbox = event.target;
 		const recordId = checkbox.dataset.id;
@@ -49,8 +36,8 @@ export function RequestTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.records.map((request, index) => (
-						<TableRow key={index}>
+					{props.records.map((request) => (
+						<TableRow key={request.id}>
 							<TableCell>
 								<Checkbox
 									onChange={handleRecordSelect}
@@ -58,7 +45,9 @@ export function RequestTable(props) {
 									inputProps={{ "data-id": request.id }}
 								/>
 							</TableCell>
-							<TableCell>{books.find((x) => x.id === request.book).title}</TableCell>
+							<TableCell>
+								{props.books.find((x) => x.id === request.book).title}
+							</TableCell>
 							<TableCell>{request.quantity}</TableCell>
 							<TableCell>{dateToIsoDateString(request.requestedDate)}</TableCell>
 							<TableCell>{request.status}</TableCell>
@@ -81,6 +70,17 @@ RequestTable.propTypes = {
 			requestedDate: PropTypes.instanceOf(Date).isRequired,
 			quantity: PropTypes.number.isRequired,
 			status: PropTypes.oneOf(["pending", "canceled", "done"]),
+		}).isRequired,
+	).isRequired,
+	books: PropTypes.arrayOf(
+		PropTypes.exact({
+			id: PropTypes.string.isRequired,
+			title: PropTypes.string.isRequired,
+			authors: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+			edition: PropTypes.number.isRequired,
+			volume: PropTypes.number.isRequired,
+			publisher: PropTypes.string.isRequired,
+			yearPublished: PropTypes.number.isRequired,
 		}).isRequired,
 	).isRequired,
 };

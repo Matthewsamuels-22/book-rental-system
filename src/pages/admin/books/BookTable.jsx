@@ -36,8 +36,8 @@ export function BookTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.records.map((book, index) => (
-						<TableRow key={index}>
+					{props.records.map((book) => (
+						<TableRow key={book.id}>
 							<TableCell>
 								<Checkbox
 									onChange={handleRecordSelect}

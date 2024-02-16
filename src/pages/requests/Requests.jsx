@@ -1,28 +1,43 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import { FaBan, FaPlus } from "react-icons/fa";
 
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
+import { BookContext } from "../../contexts/BookContext";
 import { RequestContext } from "../../contexts/RequestContext";
 import { auth } from "../../firebase";
+import { getBooks } from "../../helpers/firestore/books";
 import { getBookRequests, updateBookRequest } from "../../helpers/firestore/requests";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import { RequestDialog } from "./RequestDialog";
 import { RequestTable } from "./RequestTable";
 
 export function Requests() {
+	const { books, setBooks } = useContext(BookContext);
 	const { requests, setRequests } = useContext(RequestContext);
 
 	const [open, setOpen] = useState(false);
+	const [dataIsLoaded, setDataIsLoaded] = useState(false);
 	const [selectedRequests, setSelectedRequests] = useState([]);
 
 	useEffect(() => {
+		const dataRequests = [];
+
 		if (requests.length === 0) {
-			getBookRequests(auth.currentUser.uid)
-				.then((x) => setRequests(x))
-				.catch(console.error);
+			const requestsRequest = getBookRequests(auth.currentUser.uid).then((x) =>
+				setRequests(x),
+			);
+			dataRequests.push(requestsRequest);
 		}
+
+		if (books.length === 0) {
+			const booksRequest = getBooks().then((x) => setBooks(x));
+			dataRequests.push(booksRequest);
+		}
+
+		Promise.all(dataRequests).then(() => setDataIsLoaded(true));
 	}, []);
 
 	useDocumentTitle("Requests");
@@ -37,6 +52,10 @@ export function Requests() {
 
 		setRequests([...requests]);
 		setSelectedRequests([]);
+	}
+
+	if (!dataIsLoaded) {
+		return <Box>Loading...</Box>;
 	}
 
 	return (
@@ -63,6 +82,7 @@ export function Requests() {
 				records={requests}
 				selectedRecords={selectedRequests}
 				setSelectedRecords={setSelectedRequests}
+				books={books}
 			/>
 			<RequestDialog open={open} onClose={() => setOpen(false)} />
 		</Fragment>

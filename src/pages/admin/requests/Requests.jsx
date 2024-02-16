@@ -1,26 +1,55 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useMemo, useState } from "react";
 import { FaCheck, FaSearch } from "react-icons/fa";
 
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
+import { BookContext } from "../../../contexts/BookContext";
 import { RequestContext } from "../../../contexts/RequestContext";
+import { getBooks } from "../../../helpers/firestore/books";
 import { getBookRequests, updateBookRequest } from "../../../helpers/firestore/requests";
 import { useDocumentTitle } from "../../../hooks/useDocumentTitle";
+import { useSearchField } from "../../../hooks/useSearchField";
 import { RequestTable } from "./RequestTable";
 
 export function Requests() {
+	const { books, setBooks } = useContext(BookContext);
 	const { requests, setRequests } = useContext(RequestContext);
+
 	const [selectedRequests, setSelectedRequests] = useState([]);
+	const [dataIsLoaded, setDataIsLoaded] = useState(false);
+
+	const {
+		searchResults: rawSearchResults,
+		emptySearchResults,
+		handleSearch,
+	} = useSearchField((query) => {
+		const bookResults = books.filter((x) => x.title.toLowerCase().includes(query));
+		return requests.filter((x) => bookResults.some((y) => y.id === x.book));
+	});
+
+	const searchResults = useMemo(
+		() => requests.filter((x) => rawSearchResults.some((y) => y.id === x.id)),
+		[rawSearchResults, books, requests],
+	);
 
 	useEffect(() => {
+		const dataRequests = [];
+
 		if (requests.length === 0) {
-			getBookRequests()
-				.then((x) => setRequests(x))
-				.catch(console.error);
+			const requestsRequest = getBookRequests().then((x) => setRequests(x));
+			dataRequests.push(requestsRequest);
 		}
+
+		if (books.length === 0) {
+			const booksRequest = getBooks().then((x) => setBooks(x));
+			dataRequests.push(booksRequest);
+		}
+
+		Promise.all(dataRequests).then(() => setDataIsLoaded(true));
 	}, []);
 
 	useDocumentTitle("Requests");
@@ -37,6 +66,10 @@ export function Requests() {
 		setSelectedRequests([]);
 	}
 
+	if (!dataIsLoaded) {
+		return <Box>Loading...</Box>;
+	}
+
 	return (
 		<Fragment>
 			<Stack direction="row" spacing={2}>
@@ -51,6 +84,8 @@ export function Requests() {
 					type="search"
 					placeholder="Search"
 					size="small"
+					onChange={handleSearch}
+					onKeyDown={handleSearch}
 					InputProps={{
 						startAdornment: (
 							<InputAdornment position="start">
@@ -62,9 +97,10 @@ export function Requests() {
 			</Stack>
 
 			<RequestTable
-				records={requests}
+				records={!emptySearchResults ? searchResults : requests}
 				selectedRecords={selectedRequests}
 				setSelectedRecords={setSelectedRequests}
+				books={books}
 			/>
 		</Fragment>
 	);
