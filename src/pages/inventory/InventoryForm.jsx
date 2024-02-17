@@ -36,18 +36,14 @@ export function InventoryForm(props) {
 
 	return (
 		<Stack component="form" id={props.id} onSubmit={handleSubmit} spacing={2}>
-			<BookAutocomplete
-				ref={bookInputRef}
-				defaultValue={props.inventory?.book}
-				required
-				inputProps={{ min: 0 }}
-			/>
+			<BookAutocomplete ref={bookInputRef} defaultValue={props.inventory?.book} required />
 			<TextField
 				type="number"
 				label="Quantity"
 				name="quantity"
 				defaultValue={props.inventory?.quantity}
 				required
+				inputProps={{ min: 1 }}
 			/>
 		</Stack>
 	);

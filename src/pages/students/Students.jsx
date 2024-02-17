@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useMemo, useState } from "react";
 import { FaPen, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 
 import Button from "@mui/material/Button";
@@ -11,6 +11,7 @@ import { StudentContext } from "../../contexts/StudentContext";
 import { getBorrowEntries } from "../../helpers/firestore/borrows";
 import { deleteEverythingForStudent, getStudents } from "../../helpers/firestore/students";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import { useSearchField } from "../../hooks/useSearchField";
 import { StudentDialog } from "./StudentDialog";
 import { StudentTable } from "./StudentTable";
 
@@ -21,6 +22,19 @@ export function Students() {
 	const [open, setOpen] = useState(false);
 	const [selectedStudents, setSelectedStudents] = useState([]);
 	const [studentSelected, setStudentSelected] = useState(null);
+
+	const {
+		searchResults: rawSearchResults,
+		emptySearchResults,
+		handleSearch,
+	} = useSearchField((query) =>
+		students.filter((x) => x.name.toLowerCase().includes(query) || x.schoolId.includes(query)),
+	);
+
+	const searchResults = useMemo(
+		() => students.filter((x) => rawSearchResults.some((y) => y.id === x.id)),
+		[rawSearchResults, students],
+	);
 
 	useEffect(() => {
 		if (students.length !== 0) return;
@@ -60,8 +74,6 @@ export function Students() {
 		setBorrows(preservedBorrows);
 	}
 
-	function handleSearch(event) {}
-
 	return (
 		<Fragment>
 			<Stack direction="row" spacing={2}>
@@ -92,7 +104,8 @@ export function Students() {
 					type="search"
 					placeholder="Search"
 					size="small"
-					onChange={(e) => console.log(e.target.value)}
+					onChange={handleSearch}
+					onKeyDown={handleSearch}
 					InputProps={{
 						startAdornment: (
 							<InputAdornment position="start">
@@ -104,7 +117,7 @@ export function Students() {
 			</Stack>
 
 			<StudentTable
-				records={students}
+				records={!emptySearchResults ? searchResults : students}
 				selectedRecords={selectedStudents}
 				setSelectedRecords={setSelectedStudents}
 			/>

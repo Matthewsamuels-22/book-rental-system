@@ -37,8 +37,8 @@ export function StudentTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.records.map((student, index) => (
-						<TableRow key={index}>
+					{props.records.map((student) => (
+						<TableRow key={student.id}>
 							<TableCell>
 								<Checkbox
 									onChange={handleRecordSelect}

@@ -40,7 +40,7 @@ export function RequestForm(props) {
 				label="Quantity"
 				name="quantity"
 				required
-				inputProps={{ min: 0 }}
+				inputProps={{ min: 1 }}
 			/>
 		</Stack>
 	);
