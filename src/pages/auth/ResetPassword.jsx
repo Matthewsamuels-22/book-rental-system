@@ -20,7 +20,7 @@ export function ResetPassword() {
 	async function handleResetPassword(event) {
 		event.preventDefault();
 		await sendPasswordResetEmail(auth, emailInputRef.current.value);
-		alert("Password reset link sent to your email address");
+		window.alert("Password reset link sent to your email address");
 	}
 
 	return (

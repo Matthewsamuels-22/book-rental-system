@@ -15,7 +15,6 @@ export function ProtectedRoutes() {
 			if (user === null) {
 				// user is not signed in
 				navigate("/auth/signin");
-				navigate(0);
 				return;
 			}
 

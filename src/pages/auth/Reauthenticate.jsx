@@ -27,8 +27,13 @@ export function Reauthenticate() {
 			currentUser.email,
 			passwordInputRef.current.value,
 		);
-		await reauthenticateWithCredential(currentUser, credential);
-		navigate("/account?reauthenticated=true");
+
+		try {
+			await reauthenticateWithCredential(currentUser, credential);
+			navigate("/account?reauthenticated=true");
+		} catch (error) {
+			window.alert(error.message);
+		}
 	}
 
 	return (
