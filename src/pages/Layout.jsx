@@ -14,9 +14,9 @@ import { Header } from "../components/Header";
 import { useDrawer } from "../hooks/useDrawer";
 
 export function Layout() {
-	const { currentUserIsAdmin } = useOutletContext();
+	const context = useOutletContext();
 
-	if (currentUserIsAdmin) {
+	if (context.currentUserIsAdmin) {
 		return <Navigate to="/notfound" />;
 	}
 
@@ -110,7 +110,7 @@ export function Layout() {
 					</Tabs>
 				</Drawer>
 				<Container maxWidth="xl">
-					<Outlet />
+					<Outlet context={context} />
 				</Container>
 			</Stack>
 		</Fragment>
