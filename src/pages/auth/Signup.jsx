@@ -24,13 +24,18 @@ export function Signup() {
 	async function handleSignUp(event) {
 		event.preventDefault();
 
-		const userCredential = await createUserWithEmailAndPassword(
-			auth,
-			emailInputRef.current.value,
-			passwordInputRef.current.value,
-		);
+		try {
+			const userCredential = await createUserWithEmailAndPassword(
+				auth,
+				emailInputRef.current.value,
+				passwordInputRef.current.value,
+			);
 
-		console.log(userCredential);
+			console.log(userCredential);
+		} catch (error) {
+			window.alert(error.message);
+		}
+
 		navigate("/");
 	}
 

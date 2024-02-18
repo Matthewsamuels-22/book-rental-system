@@ -51,23 +51,36 @@ export function ProfileMenu() {
 				anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 				transformOrigin={{ vertical: "top", horizontal: "right" }}
 				MenuListProps={{ "aria-labelledby": "profile-button" }}>
-				<MenuItem onClick={handleClose} divider>
+				<MenuItem divider sx={{ padding: 0 }}>
 					<MuiLink
 						component={Link}
 						to={currentUserIsAdmin ? "/admin/account" : "/account"}
+						onClick={handleClose}
 						color="inherit"
-						underline="none">
+						underline="none"
+						paddingX={2}
+						paddingY={0.75}>
 						<ListItemIcon>
 							<FaUser />
 						</ListItemIcon>
 						Account
 					</MuiLink>
 				</MenuItem>
-				<MenuItem onClick={handleSignout} sx={{ color: theme.palette.error.main }}>
-					<ListItemIcon sx={{ color: "inherit" }}>
-						<FaSignOutAlt />
-					</ListItemIcon>
-					Sign out
+				<MenuItem sx={{ padding: 0, color: theme.palette.error.main }}>
+					<MuiLink
+						component={Link}
+						to="/auth/signin"
+						onClick={handleSignout}
+						color="inherit"
+						underline="none"
+						paddingX={2}
+						paddingY={0.75}
+						reloadDocument>
+						<ListItemIcon sx={{ color: "inherit" }}>
+							<FaSignOutAlt />
+						</ListItemIcon>
+						Sign out
+					</MuiLink>
 				</MenuItem>
 			</Menu>
 		</Fragment>

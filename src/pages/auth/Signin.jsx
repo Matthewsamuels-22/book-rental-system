@@ -42,17 +42,22 @@ export function Signin() {
 			await setPersistence(auth, browserSessionPersistence);
 		}
 
-		const userCredential = await signInWithEmailAndPassword(
-			auth,
-			emailInputRef.current.value,
-			passwordInputRef.current.value,
-		);
+		try {
+			const userCredential = await signInWithEmailAndPassword(
+				auth,
+				emailInputRef.current.value,
+				passwordInputRef.current.value,
+			);
 
-		window.localStorage.setItem("rememberMe", rememberMe);
-		console.log(userCredential);
+			window.localStorage.setItem("rememberMe", rememberMe);
+			console.log(userCredential);
 
-		if (await userIsAdmin(userCredential.user.uid)) {
-			navigate("/admin/books");
+			if (await userIsAdmin(userCredential.user.uid)) {
+				navigate("/admin/books");
+				return;
+			}
+		} catch (error) {
+			window.alert(error.message);
 			return;
 		}
 
